@@ -421,7 +421,7 @@
 
         // Criar mensagem do WhatsApp com UTM
         function createWhatsAppLink() {
-            const baseNumber = '5592981112555';
+            const baseNumber = '5571993485126';
             
             // Mensagem LIMPA - SEM UTM (UTM vai só pro webhook)
             const message = 'Preciso falar com Dr Daniel! Estou com problemas bancários.';
@@ -441,7 +441,7 @@
                 // ENVIAR WEBHOOK DE CONTACT
                 sendWebhook('contact', {
                     action: 'click_whatsapp',
-                    whatsapp_number: '5592981112555'
+                    whatsapp_number: '5571993485126'
                 });
                 
                 // Meta Pixel - Contact (evento padrão para WhatsApp)

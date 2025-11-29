@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problemas Bancários? Podemos te ajudar! | Dr. Daniel</title>
+    <title>Problemas Bancários? Podemos te ajudar! | Me Ajuda!</title>
     <meta name="description" content="Problemas bancários, descontos estranhos ou empréstimos que não reconhece? Nossa equipe especializada pode te ajudar.">
     
     <!-- Google Analytics 4 -->
@@ -104,15 +104,26 @@
             }
         }
 
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            max-width: 180px;
+            height: auto;
+            display: inline-block;
+        }
+
         .icon-container {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 30px;
+            margin: 0 auto 25px;
             box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
             animation: pulse 2s infinite;
         }
@@ -123,8 +134,8 @@
         }
 
         .icon-container svg {
-            width: 45px;
-            height: 45px;
+            width: 38px;
+            height: 38px;
             fill: white;
         }
 
@@ -249,6 +260,10 @@
 
         /* Mobile Optimization */
         @media (max-width: 640px) {
+            .logo {
+                max-width: 150px;
+            }
+
             .container {
                 padding: 35px 25px;
                 border-radius: 20px;
@@ -273,13 +288,13 @@
             }
 
             .icon-container {
-                width: 70px;
-                height: 70px;
+                width: 60px;
+                height: 60px;
             }
 
             .icon-container svg {
-                width: 38px;
-                height: 38px;
+                width: 32px;
+                height: 32px;
             }
 
             .trust-badges {
@@ -299,6 +314,10 @@
         }
 
         @media (max-width: 400px) {
+            .logo {
+                max-width: 130px;
+            }
+
             .container {
                 padding: 30px 20px;
             }
@@ -325,6 +344,11 @@
     <div id="utmIndicator" class="utm-indicator"></div>
 
     <div class="container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="https://lhbwfbquxkutcyqazpnw.supabase.co/storage/v1/object/public/images/logo/ME%20AJUDA%20(2).webp" alt="ME AJUDA" class="logo">
+        </div>
+
         <!-- Ícone -->
         <div class="icon-container">
             <svg viewBox="0 0 24 24">
@@ -423,24 +447,31 @@
             
             // Adicionar evento de clique para tracking
             btn.addEventListener('click', function(e) {
-                // Meta Pixel - Lead
+                // ENVIAR WEBHOOK DE CONTACT
+                sendWebhook('contact', {
+                    action: 'click_whatsapp',
+                    whatsapp_number: '5592981112555'
+                });
+                
+                // Meta Pixel - Contact (evento padrão para WhatsApp)
                 if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead');
+                    fbq('track', 'Contact');
                 }
                 
                 // Google Analytics - Event
                 if (typeof gtag !== 'undefined') {
                     const utmParams = getUTMParams();
-                    gtag('event', 'click_whatsapp', {
+                    gtag('event', 'contact', {
                         event_category: 'engagement',
-                        event_label: utmParams.utm_source,
+                        event_label: 'whatsapp',
+                        method: 'whatsapp',
                         utm_source: utmParams.utm_source,
                         utm_medium: utmParams.utm_medium,
                         utm_campaign: utmParams.utm_campaign
                     });
                 }
                 
-                console.log('📱 WhatsApp clicado:', getUTMParams());
+                console.log('📱 WhatsApp clicado - Evento Contact disparado');
             });
         }
 
@@ -474,11 +505,57 @@
             }
         }
 
+        // ========== SISTEMA DE WEBHOOK ==========
+        
+        const WEBHOOK_URL = 'https://n8n.advfunnel.com.br/webhook/3f5afbef-5c95-4e84-b80d-22e11aa98be1/:wwmeajuda';
+        
+        // Função para enviar dados ao webhook
+        function sendWebhook(eventType, additionalData = {}) {
+            const utmParams = getUTMParams();
+            
+            const data = {
+                evento: eventType,
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                utm_source: utmParams.utm_source,
+                utm_medium: utmParams.utm_medium,
+                utm_campaign: utmParams.utm_campaign,
+                utm_content: utmParams.utm_content,
+                utm_term: utmParams.utm_term,
+                user_agent: navigator.userAgent,
+                referrer: document.referrer || 'direto',
+                screen_width: window.screen.width,
+                screen_height: window.screen.height,
+                ...additionalData
+            };
+            
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('✅ Webhook enviado:', eventType, data);
+                return response.json();
+            })
+            .then(result => {
+                console.log('✅ Resposta do webhook:', result);
+            })
+            .catch(error => {
+                console.error('❌ Erro ao enviar webhook:', error);
+            });
+        }
+
         // Inicializar tudo
         window.addEventListener('load', function() {
             setupWhatsAppButton();
             showUTMIndicator();
             createParticles();
+            
+            // ENVIAR WEBHOOK DE PAGEVIEW
+            sendWebhook('pageview');
             
             console.log('✅ Página carregada');
             console.log('📊 UTM Params:', getUTMParams());
@@ -486,28 +563,7 @@
 
         // ========== RASTREAMENTO DE EVENTOS EXTRAS ==========
         
-        // Rastrear scroll
-        let scrollTracked = false;
-        window.addEventListener('scroll', function() {
-            if (!scrollTracked && window.scrollY > 50) {
-                scrollTracked = true;
-                if (typeof fbq !== 'undefined') {
-                    fbq('trackCustom', 'ScrollEngagement');
-                }
-            }
-        });
-
-        // Rastrear tempo na página (30s)
-        setTimeout(() => {
-            if (typeof fbq !== 'undefined') {
-                fbq('trackCustom', 'TimeOnPage30s');
-            }
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'time_on_page_30s', {
-                    event_category: 'engagement'
-                });
-            }
-        }, 30000);
+        // Apenas eventos padrão - sem customizados
     </script>
 </body>
 </html>

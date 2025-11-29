@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seus Direitos Trabalhistas | MeAjuda</title>
+    <meta name="description" content="Verbas rescisórias, horas extras, férias não pagas, FGTS? Conheça seus direitos trabalhistas. Nossa equipe pode te ajudar em todo o Brasil.">
+    
+    <!-- Preconnect para melhorar performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://connect.facebook.net">
+    <link rel="preconnect" href="https://lhbwfbquxkutcyqazpnw.supabase.co">
+    <link rel="dns-prefetch" href="https://n8n.advfunnel.com.br">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Partículas de fundo */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+            will-change: transform, opacity;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translate3d(50px, -100vh, 0); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            padding: 50px 45px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            max-width: 180px;
+            height: auto;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 30px;
+            line-height: 1.3;
+            color: #0f172a;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h1 span {
+            color: #3b82f6;
+            display: block;
+            font-size: 34px;
+            margin-top: 12px;
+        }
+
+        .benefits-list {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .benefits-list h3 {
+            font-size: 18px;
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .benefits-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            font-size: 15px;
+            color: #1e293b;
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .subtitle strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 19px;
+            font-weight: 700;
+            padding: 20px 50px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .whatsapp-icon {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 45px;
+            padding-top: 35px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: #3b82f6;
+        }
+
+        .badge-text {
+            font-size: 13px;
+            color: #475569;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* MODAL DO FORMULÁRIO */
+        .form-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .form-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .form-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: #9ca3af;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .form-close:hover {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 24px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 640px) {
+            .particle {
+                animation-duration: 20s;
+            }
+            
+            .logo {
+                max-width: 150px;
+            }
+
+            .form-content {
+                padding: 30px 25px;
+                width: 95%;
+            }
+
+            .form-header h2 {
+                font-size: 22px;
+            }
+
+            .form-header p {
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 35px 25px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            h1 span {
+                font-size: 30px;
+            }
+
+            .benefits-list {
+                padding: 20px 20px;
+            }
+
+            .benefits-list h3 {
+                font-size: 16px;
+            }
+
+            .benefits-list li {
+                font-size: 14px;
+                padding: 8px 0;
+                padding-left: 25px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .whatsapp-btn {
+                font-size: 17px;
+                padding: 18px 40px;
+                width: 100%;
+            }
+
+            .trust-badges {
+                gap: 20px;
+            }
+
+            .badge-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .badge-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .badge-text {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo {
+                max-width: 130px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h1 span {
+                font-size: 28px;
+            }
+
+            .benefits-list {
+                padding: 18px 18px;
+            }
+
+            .trust-badges {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+    
+    <!-- Google Analytics 4 -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JJ6D28ZZZE');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ6D28ZZZE"></script>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        
+        fbq('init', '610478651574908');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=610478651574908&ev=PageView&noscript=1"
+    /></noscript>
+</head>
+<body>
+    <!-- Partículas de fundo -->
+    <div id="particles"></div>
+
+    <!-- MODAL DO FORMULÁRIO -->
+    <div id="formModal" class="form-modal">
+        <div class="form-content">
+            <button class="form-close" onclick="closeFormModal()">&times;</button>
+            
+            <div class="form-header">
+                <h2>Fale com nossa equipe! 🚀</h2>
+                <p>Preencha seus dados para conversar no WhatsApp</p>
+            </div>
+
+            <form id="leadForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label for="leadName">Nome completo *</label>
+                    <input 
+                        type="text" 
+                        id="leadName" 
+                        name="name" 
+                        placeholder="Digite seu nome"
+                        required
+                    >
+                    <span class="form-error" id="nameError">Por favor, digite seu nome</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="leadPhone">Telefone/WhatsApp *</label>
+                    <input 
+                        type="tel" 
+                        id="leadPhone" 
+                        name="phone" 
+                        placeholder="(00) 00000-0000"
+                        required
+                    >
+                    <span class="form-error" id="phoneError">Digite um telefone válido</span>
+                </div>
+
+                <button type="submit" class="form-submit" id="submitBtn">
+                    Enviar e ir para o WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="https://lhbwfbquxkutcyqazpnw.supabase.co/storage/v1/object/public/images/logo/meajuda.webp" alt="ME AJUDA" class="logo">
+        </div>
+
+        <!-- Título -->
+        <h1>
+            Você sabia que pode ter direitos trabalhistas não pagos?
+            <span>Podemos te ajudar!</span>
+        </h1>
+
+        <!-- Lista de Benefícios -->
+        <div class="benefits-list">
+            <h3>Problemas trabalhistas mais comuns:</h3>
+            <ul>
+                <li>Rescisão indireta (demissão por justa causa do empregador)</li>
+                <li>Reconhecimento de vínculo empregatício</li>
+                <li>Acidente de trabalho e doenças ocupacionais</li>
+                <li>Demissão de grávida ou durante estabilidade</li>
+                <li>Horas extras não pagas ou calculadas incorretamente</li>
+                <li>Verbas rescisórias não recebidas na demissão</li>
+                <li>Férias vencidas ou não pagas corretamente</li>
+                <li>FGTS não depositado ou com valores errados</li>
+                <li>Adicional noturno, insalubridade ou periculosidade</li>
+                <li>Intervalo de descanso não concedido</li>
+            </ul>
+        </div>
+
+        <!-- Subtítulo -->
+        <p class="subtitle">
+            <strong>Atendimento em todo o Brasil.</strong> Nossa equipe especializada responde em poucos segundos pelo WhatsApp.
+        </p>
+
+        <!-- Botão WhatsApp -->
+        <a href="#" id="whatsappBtn" class="whatsapp-btn">
+            <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Falar no WhatsApp
+        </a>
+
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+            <div class="badge">
+                <div class="badge-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                </div>
+                <span class="badge-text">Atendimento<br>Seguro</span>
+            </div>
+            <div class="badge">
+                <div class="badge-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                    </svg>
+                </div>
+                <span class="badge-text">Todo o<br>Brasil</span>
+            </div>
+            <div class="badge">
+                <div class="badge-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <span class="badge-text">Resposta<br>Rápida</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURAÇÃO ==========
+        const WEBHOOK_URL = 'https://n8n.advfunnel.com.br/webhook/5443b3db-193a-466a-b70a-7d31cbd45ca8/:wwmeajuda-leads';
+        const WHATSAPP_NUMBER = '5571993485126';
+        const NICHO = 'trabalhista';
+        
+        // ========== SISTEMA DE RASTREAMENTO UTM ==========
+        function getUTMParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                utm_source: params.get('utm_source') || 'direto',
+                utm_medium: params.get('utm_medium') || 'organico',
+                utm_campaign: params.get('utm_campaign') || 'sem_campanha',
+                utm_content: params.get('utm_content') || '',
+                utm_term: params.get('utm_term') || ''
+            };
+        }
+
+        // ========== SISTEMA DE WEBHOOK ==========
+        function sendWebhook(eventType, additionalData = {}) {
+            const utmParams = getUTMParams();
+            
+            const data = {
+                evento: eventType,
+                nicho: NICHO,
+                timestamp: new Date().toISOString(),
+                site: window.location.href,
+                utm_source: utmParams.utm_source,
+                utm_medium: utmParams.utm_medium,
+                utm_campaign: utmParams.utm_campaign,
+                utm_content: utmParams.utm_content,
+                utm_term: utmParams.utm_term,
+                ...additionalData
+            };
+            
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('✅ Webhook enviado:', data);
+                return response.json();
+            })
+            .catch(error => {
+                console.error('❌ Erro ao enviar webhook:', error);
+            });
+        }
+
+        // ========== FUNÇÕES DO FORMULÁRIO ==========
+        function openFormModal() {
+            document.getElementById('formModal').classList.add('show');
+            document.getElementById('leadName').focus();
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.remove('show');
+            document.getElementById('leadForm').reset();
+            document.getElementById('nameError').classList.remove('show');
+            document.getElementById('phoneError').classList.remove('show');
+        }
+
+        function validateForm() {
+            const name = document.getElementById('leadName').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const nameError = document.getElementById('nameError');
+            const phoneError = document.getElementById('phoneError');
+            
+            let isValid = true;
+            
+            if (name.length < 3) {
+                nameError.classList.add('show');
+                document.getElementById('leadName').classList.add('error');
+                isValid = false;
+            } else {
+                nameError.classList.remove('show');
+                document.getElementById('leadName').classList.remove('error');
+            }
+            
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (phoneDigits.length < 10) {
+                phoneError.classList.add('show');
+                document.getElementById('leadPhone').classList.add('error');
+                isValid = false;
+            } else {
+                phoneError.classList.remove('show');
+                document.getElementById('leadPhone').classList.remove('error');
+            }
+            
+            return isValid;
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            const name = document.getElementById('leadName').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const phoneClean = phone.replace(/\D/g, '');
+            
+            // Enviar webhook com nome + telefone + nicho + UTMs
+            sendWebhook('lead', {
+                nome: name,
+                telefone: '55' + phoneClean
+            });
+            
+            // Meta Pixel - Lead
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+            
+            // Aguardar 1 segundo e redirecionar
+            setTimeout(() => {
+                const message = `Olá Equipe MeAjuda! Sou ${name} (${phone}) e tenho dúvidas sobre meus direitos trabalhistas.`;
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+                
+                // Meta Pixel - Contact
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Contact');
+                }
+                
+                // Google Analytics - Event
+                if (typeof gtag !== 'undefined') {
+                    const utmParams = getUTMParams();
+                    gtag('event', 'contact', {
+                        event_category: 'engagement',
+                        event_label: 'whatsapp',
+                        method: 'whatsapp',
+                        utm_source: utmParams.utm_source,
+                        utm_medium: utmParams.utm_medium,
+                        utm_campaign: utmParams.utm_campaign
+                    });
+                }
+                
+                window.location.href = whatsappUrl;
+            }, 1000);
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        function setupWhatsAppButton() {
+            const btn = document.getElementById('whatsappBtn');
+            btn.removeAttribute('href');
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openFormModal();
+            });
+        }
+
+        // Criar partículas - reduzido para 15 no mobile
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const isMobile = window.innerWidth <= 640;
+            const particleCount = isMobile ? 15 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Máscara de telefone
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('leadPhone');
+            
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 11) value = value.slice(0, 11);
+                
+                if (value.length <= 10) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                } else {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+                }
+                
+                e.target.value = value;
+            });
+        });
+
+        // Inicializar
+        window.addEventListener('load', function() {
+            setupWhatsAppButton();
+            createParticles();
+            console.log('✅ Página carregada - Nicho:', NICHO);
+        });
+    </script>
+</body>
+</html>

@@ -438,11 +438,8 @@
             
             // Adicionar evento de clique para tracking
             btn.addEventListener('click', function(e) {
-                // ENVIAR WEBHOOK DE CONTACT
-                sendWebhook('contact', {
-                    action: 'click_whatsapp',
-                    whatsapp_number: '5571993485126'
-                });
+                // ENVIAR WEBHOOK (SÓ AQUI!)
+                sendWebhook('contact');
                 
                 // Meta Pixel - Contact (evento padrão para WhatsApp)
                 if (typeof fbq !== 'undefined') {
@@ -462,7 +459,7 @@
                     });
                 }
                 
-                console.log('📱 WhatsApp clicado - Evento Contact disparado');
+                console.log('📱 WhatsApp clicado - Webhook + Pixels disparados');
             });
         }
 
@@ -507,17 +504,13 @@
             const data = {
                 evento: eventType,
                 timestamp: new Date().toISOString(),
-                url: window.location.href,
+                site: window.location.href,
+                telefone: '5571993485126',
                 utm_source: utmParams.utm_source,
                 utm_medium: utmParams.utm_medium,
                 utm_campaign: utmParams.utm_campaign,
                 utm_content: utmParams.utm_content,
-                utm_term: utmParams.utm_term,
-                user_agent: navigator.userAgent,
-                referrer: document.referrer || 'direto',
-                screen_width: window.screen.width,
-                screen_height: window.screen.height,
-                ...additionalData
+                utm_term: utmParams.utm_term
             };
             
             fetch(WEBHOOK_URL, {
@@ -528,7 +521,7 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
-                console.log('✅ Webhook enviado:', eventType, data);
+                console.log('✅ Webhook enviado:', data);
                 return response.json();
             })
             .then(result => {
@@ -544,9 +537,6 @@
             setupWhatsAppButton();
             showUTMIndicator();
             createParticles();
-            
-            // ENVIAR WEBHOOK DE PAGEVIEW
-            sendWebhook('pageview');
             
             console.log('✅ Página carregada');
             console.log('📊 UTM Params:', getUTMParams());

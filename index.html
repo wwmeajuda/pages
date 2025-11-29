@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problemas Bancários? Podemos te ajudar! | Me Ajudal</title>
+    <title>Problemas Bancários? Podemos te ajudar! | MeAjuda</title>
     <meta name="description" content="Problemas bancários, descontos estranhos ou empréstimos que não reconhece? Nossa equipe especializada pode te ajudar.">
     
     <!-- Google Analytics 4 -->
@@ -108,6 +108,11 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .logo-container {
@@ -237,31 +242,6 @@
             font-size: 12px;
             color: #6b7280;
             font-weight: 600;
-        }
-
-        /* Indicador de origem */
-        .utm-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            z-index: 1000;
-            display: none;
-        }
-
-        .utm-indicator.show {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* MODAL DO FORMULÁRIO */
@@ -468,13 +448,6 @@
             .badge-text {
                 font-size: 11px;
             }
-
-            .utm-indicator {
-                bottom: 10px;
-                right: 10px;
-                font-size: 10px;
-                padding: 6px 12px;
-            }
         }
 
         @media (max-width: 400px) {
@@ -503,9 +476,6 @@
 <body>
     <!-- Partículas de fundo -->
     <div id="particles"></div>
-
-    <!-- Indicador UTM (para debug) -->
-    <div id="utmIndicator" class="utm-indicator"></div>
 
     <!-- MODAL DO FORMULÁRIO -->
     <div id="formModal" class="form-modal">
@@ -644,21 +614,6 @@
             });
         }
 
-        // Mostrar indicador de origem (debug)
-        function showUTMIndicator() {
-            const utmParams = getUTMParams();
-            if (utmParams.utm_source !== 'direto') {
-                const indicator = document.getElementById('utmIndicator');
-                indicator.textContent = `📊 ${utmParams.utm_source.toUpperCase()}`;
-                indicator.classList.add('show');
-                
-                // Esconder após 5 segundos
-                setTimeout(() => {
-                    indicator.classList.remove('show');
-                }, 5000);
-            }
-        }
-
         // Criar partículas de fundo
         function createParticles() {
             const container = document.getElementById('particles');
@@ -673,6 +628,17 @@
                 container.appendChild(particle);
             }
         }
+
+        // Inicializar tudo
+        window.addEventListener('load', function() {
+            setupWhatsAppButton();
+            createParticles();
+            
+            console.log('✅ Página carregada');
+            console.log('📊 UTM Params:', getUTMParams());
+        });
+
+        // ========== RASTREAMENTO DE EVENTOS EXTRAS ==========
 
         // ========== SISTEMA DE WEBHOOK ==========
         
@@ -715,16 +681,6 @@
                 console.error('❌ Erro ao enviar webhook:', error);
             });
         }
-
-        // Inicializar tudo
-        window.addEventListener('load', function() {
-            setupWhatsAppButton();
-            showUTMIndicator();
-            createParticles();
-            
-            console.log('✅ Página carregada');
-            console.log('📊 UTM Params:', getUTMParams());
-        });
 
         // ========== RASTREAMENTO DE EVENTOS EXTRAS ==========
         

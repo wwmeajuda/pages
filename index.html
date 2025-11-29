@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problemas Bancários? Podemos te ajudar! | Me Ajudal</title>
+    <title>Problemas Bancários? Podemos te ajudar! | Dr. Daniel</title>
     <meta name="description" content="Problemas bancários, descontos estranhos ou empréstimos que não reconhece? Nossa equipe especializada pode te ajudar.">
     
     <!-- Google Analytics 4 -->
@@ -421,19 +421,10 @@
 
         // Criar mensagem do WhatsApp com UTM
         function createWhatsAppLink() {
-            const utmParams = getUTMParams();
             const baseNumber = '5592981112555';
             
-            // Mensagem base
-            let message = 'Preciso falar com Dr Daniel! Estou com problemas bancários.';
-            
-            // Se vier de campanha, adicionar origem
-            if (utmParams.utm_source !== 'direto') {
-                message += `\n\n📊 Origem: ${utmParams.utm_source}`;
-                if (utmParams.utm_campaign !== 'sem_campanha') {
-                    message += ` | Campanha: ${utmParams.utm_campaign}`;
-                }
-            }
+            // Mensagem LIMPA - SEM UTM (UTM vai só pro webhook)
+            const message = 'Preciso falar com Dr Daniel! Estou com problemas bancários.';
             
             const encodedMessage = encodeURIComponent(message);
             return `https://wa.me/${baseNumber}?text=${encodedMessage}`;

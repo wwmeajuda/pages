@@ -6,39 +6,11 @@
     <title>Problemas Bancários? Podemos te ajudar! | MeAjuda</title>
     <meta name="description" content="Problemas bancários, descontos estranhos ou empréstimos que não reconhece? Nossa equipe especializada pode te ajudar.">
     
-    <!-- Google Analytics 4 -->
-    <!-- 🔧 CONFIGURAÇÃO: GOOGLE ANALYTICS ID -->
-    <!-- Para alterar o ID do Google Analytics, substitua nas 2 linhas abaixo -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ6D28ZZZE"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-JJ6D28ZZZE');
-    </script>
-    <!-- FIM CONFIGURAÇÃO: GOOGLE ANALYTICS ID -->
-    
-    <!-- Meta Pixel Code -->
-    <!-- 🔧 CONFIGURAÇÃO: META PIXEL ID -->
-    <!-- Para alterar o ID do Meta Pixel, substitua nas 2 linhas abaixo -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        
-        fbq('init', '610478651574908');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=610478651574908&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- FIM CONFIGURAÇÃO: META PIXEL ID -->
-    <!-- End Meta Pixel Code -->
+    <!-- Preconnect para melhorar performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://connect.facebook.net">
+    <link rel="preconnect" href="https://lhbwfbquxkutcyqazpnw.supabase.co">
+    <link rel="dns-prefetch" href="https://n8n.advfunnel.com.br">
     
     <style>
         * {
@@ -59,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* Partículas de fundo */
+        /* Partículas otimizadas - reduzidas para mobile */
         #particles {
             position: fixed;
             top: 0;
@@ -77,13 +49,14 @@
             background: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             animation: float 15s infinite ease-in-out;
+            will-change: transform, opacity;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            0%, 100% { transform: translate3d(0, 0, 0); opacity: 0; }
             10% { opacity: 0.6; }
             90% { opacity: 0.6; }
-            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+            100% { transform: translate3d(50px, -100vh, 0); opacity: 0; }
         }
 
         .container {
@@ -189,6 +162,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            cursor: pointer;
         }
 
         .whatsapp-btn:hover {
@@ -244,7 +218,7 @@
             font-weight: 600;
         }
 
-        /* MODAL DO FORMULÁRIO */
+        /* MODAL DO FORMULÁRIO - Otimizado sem backdrop-filter */
         .form-modal {
             display: none;
             position: fixed;
@@ -254,7 +228,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(5px);
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -391,6 +364,11 @@
 
         /* Mobile Optimization */
         @media (max-width: 640px) {
+            /* Reduzir animações em mobile para performance */
+            .particle {
+                animation-duration: 20s;
+            }
+            
             .logo {
                 max-width: 150px;
             }
@@ -472,6 +450,33 @@
             }
         }
     </style>
+    
+    <!-- Google Analytics 4 - Carregamento assíncrono otimizado -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JJ6D28ZZZE');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ6D28ZZZE"></script>
+    
+    <!-- Meta Pixel Code - Carregamento assíncrono -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        
+        fbq('init', '610478651574908');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=610478651574908&ev=PageView&noscript=1"
+    /></noscript>
 </head>
 <body>
     <!-- Partículas de fundo -->
@@ -522,10 +527,7 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo-container">
-            <!-- 🔧 CONFIGURAÇÃO: URL DA LOGO -->
-            <!-- Para alterar a logo, substitua o link abaixo -->
             <img src="https://lhbwfbquxkutcyqazpnw.supabase.co/storage/v1/object/public/images/logo/meajuda.webp" alt="ME AJUDA" class="logo">
-            <!-- FIM CONFIGURAÇÃO: URL DA LOGO -->
         </div>
 
         <!-- Ícone -->
@@ -584,9 +586,12 @@
     </div>
 
     <script>
-        // ========== SISTEMA DE RASTREAMENTO UTM ==========
+        // ========== CONFIGURAÇÃO ==========
+        const WEBHOOK_URL = 'https://n8n.advfunnel.com.br/webhook/5443b3db-193a-466a-b70a-7d31cbd45ca8/:wwmeajuda-leads';
+        const WHATSAPP_NUMBER = '5571993485126';
+        const NICHO = 'bancário';
         
-        // Capturar parâmetros UTM da URL
+        // ========== SISTEMA DE RASTREAMENTO UTM ==========
         function getUTMParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -598,69 +603,21 @@
             };
         }
 
-        // Aplicar link ao botão
-        function setupWhatsAppButton() {
-            const btn = document.getElementById('whatsappBtn');
-            
-            // REMOVER href (não vai mais direto pro WhatsApp)
-            btn.removeAttribute('href');
-            
-            // Adicionar evento de clique para ABRIR MODAL
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openFormModal();
-                
-                console.log('📱 Modal do formulário aberto');
-            });
-        }
-
-        // Criar partículas de fundo
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // Inicializar tudo
-        window.addEventListener('load', function() {
-            setupWhatsAppButton();
-            createParticles();
-            
-            console.log('✅ Página carregada');
-            console.log('📊 UTM Params:', getUTMParams());
-        });
-
-        // ========== RASTREAMENTO DE EVENTOS EXTRAS ==========
-
         // ========== SISTEMA DE WEBHOOK ==========
-        
-        // 🔧 CONFIGURAÇÃO: URL DO WEBHOOK
-        // Para alterar o webhook, substitua a URL abaixo
-        const WEBHOOK_URL = 'https://n8n.advfunnel.com.br/webhook/5443b3db-193a-466a-b70a-7d31cbd45ca8/:wwmeajuda-leads';
-        // FIM CONFIGURAÇÃO: URL DO WEBHOOK
-        
-        // Função para enviar dados ao webhook
         function sendWebhook(eventType, additionalData = {}) {
             const utmParams = getUTMParams();
             
             const data = {
                 evento: eventType,
+                nicho: NICHO,
                 timestamp: new Date().toISOString(),
                 site: window.location.href,
-                telefone: '557193485126',
                 utm_source: utmParams.utm_source,
                 utm_medium: utmParams.utm_medium,
                 utm_campaign: utmParams.utm_campaign,
                 utm_content: utmParams.utm_content,
-                utm_term: utmParams.utm_term
+                utm_term: utmParams.utm_term,
+                ...additionalData
             };
             
             fetch(WEBHOOK_URL, {
@@ -674,32 +631,132 @@
                 console.log('✅ Webhook enviado:', data);
                 return response.json();
             })
-            .then(result => {
-                console.log('✅ Resposta do webhook:', result);
-            })
             .catch(error => {
                 console.error('❌ Erro ao enviar webhook:', error);
             });
         }
 
-        // ========== RASTREAMENTO DE EVENTOS EXTRAS ==========
-        
-        // Apenas eventos padrão - sem customizados
-
         // ========== FUNÇÕES DO FORMULÁRIO ==========
-        
-        // Abrir modal
         function openFormModal() {
             document.getElementById('formModal').classList.add('show');
             document.getElementById('leadName').focus();
         }
 
-        // Fechar modal
         function closeFormModal() {
             document.getElementById('formModal').classList.remove('show');
             document.getElementById('leadForm').reset();
             document.getElementById('nameError').classList.remove('show');
             document.getElementById('phoneError').classList.remove('show');
+        }
+
+        function validateForm() {
+            const name = document.getElementById('leadName').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const nameError = document.getElementById('nameError');
+            const phoneError = document.getElementById('phoneError');
+            
+            let isValid = true;
+            
+            if (name.length < 3) {
+                nameError.classList.add('show');
+                document.getElementById('leadName').classList.add('error');
+                isValid = false;
+            } else {
+                nameError.classList.remove('show');
+                document.getElementById('leadName').classList.remove('error');
+            }
+            
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (phoneDigits.length < 10) {
+                phoneError.classList.add('show');
+                document.getElementById('leadPhone').classList.add('error');
+                isValid = false;
+            } else {
+                phoneError.classList.remove('show');
+                document.getElementById('leadPhone').classList.remove('error');
+            }
+            
+            return isValid;
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            const name = document.getElementById('leadName').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const phoneClean = phone.replace(/\D/g, '');
+            
+            // Enviar webhook com nome + telefone + nicho + UTMs
+            sendWebhook('lead', {
+                nome: name,
+                telefone: '55' + phoneClean
+            });
+            
+            // Meta Pixel - Lead
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+            
+            // Aguardar 1 segundo e redirecionar
+            setTimeout(() => {
+                const message = `Olá Equipe MeAjuda! Sou ${name} (${phone}) e estou com problemas bancários.`;
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+                
+                // Meta Pixel - Contact
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Contact');
+                }
+                
+                // Google Analytics - Event
+                if (typeof gtag !== 'undefined') {
+                    const utmParams = getUTMParams();
+                    gtag('event', 'contact', {
+                        event_category: 'engagement',
+                        event_label: 'whatsapp',
+                        method: 'whatsapp',
+                        utm_source: utmParams.utm_source,
+                        utm_medium: utmParams.utm_medium,
+                        utm_campaign: utmParams.utm_campaign
+                    });
+                }
+                
+                window.location.href = whatsappUrl;
+            }, 1000);
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        function setupWhatsAppButton() {
+            const btn = document.getElementById('whatsappBtn');
+            btn.removeAttribute('href');
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openFormModal();
+            });
+        }
+
+        // Criar partículas - reduzido para 15 no mobile
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const isMobile = window.innerWidth <= 640;
+            const particleCount = isMobile ? 15 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
         }
 
         // Máscara de telefone
@@ -721,134 +778,12 @@
             });
         });
 
-        // Validar formulário
-        function validateForm() {
-            const name = document.getElementById('leadName').value.trim();
-            const phone = document.getElementById('leadPhone').value.trim();
-            const nameError = document.getElementById('nameError');
-            const phoneError = document.getElementById('phoneError');
-            
-            let isValid = true;
-            
-            // Validar nome
-            if (name.length < 3) {
-                nameError.classList.add('show');
-                document.getElementById('leadName').classList.add('error');
-                isValid = false;
-            } else {
-                nameError.classList.remove('show');
-                document.getElementById('leadName').classList.remove('error');
-            }
-            
-            // Validar telefone (mínimo 14 caracteres com máscara)
-            const phoneDigits = phone.replace(/\D/g, '');
-            if (phoneDigits.length < 10) {
-                phoneError.classList.add('show');
-                document.getElementById('leadPhone').classList.add('error');
-                isValid = false;
-            } else {
-                phoneError.classList.remove('show');
-                document.getElementById('leadPhone').classList.remove('error');
-            }
-            
-            return isValid;
-        }
-
-        // Enviar formulário
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) {
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-            
-            const name = document.getElementById('leadName').value.trim();
-            const phone = document.getElementById('leadPhone').value.trim();
-            const phoneClean = phone.replace(/\D/g, '');
-            
-            // ENVIAR WEBHOOK COM NOME + TELEFONE + UTMs
-            sendWebhookWithLead(name, phoneClean);
-            
-            // Meta Pixel - Lead (evento padrão para captura de lead)
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
-            }
-            
-            // Aguardar 1 segundo e redirecionar
-            setTimeout(() => {
-                // 🔧 CONFIGURAÇÃO: NÚMERO DO WHATSAPP
-                // Para alterar o número do WhatsApp, substitua abaixo (formato: 5592981112555)
-                const whatsappNumber = '5571993485126';
-                // FIM CONFIGURAÇÃO: NÚMERO DO WHATSAPP
-                
-                const message = `Olá Equipe MeAjuda! Sou ${name} (${phone}) e estou com problemas bancários.`;
-                const encodedMessage = encodeURIComponent(message);
-                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-                
-                // Meta Pixel - Contact (conversão final)
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Contact');
-                }
-                
-                // Google Analytics - Event
-                if (typeof gtag !== 'undefined') {
-                    const utmParams = getUTMParams();
-                    gtag('event', 'contact', {
-                        event_category: 'engagement',
-                        event_label: 'whatsapp',
-                        method: 'whatsapp',
-                        utm_source: utmParams.utm_source,
-                        utm_medium: utmParams.utm_medium,
-                        utm_campaign: utmParams.utm_campaign
-                    });
-                }
-                
-                // Redirecionar
-                window.location.href = whatsappUrl;
-            }, 1000);
-        }
-
-        // Enviar webhook com dados do lead
-        function sendWebhookWithLead(name, phone) {
-            const utmParams = getUTMParams();
-            
-            const data = {
-                evento: 'lead',
-                timestamp: new Date().toISOString(),
-                site: window.location.href,
-                nome: name,
-                telefone: '55' + phone,
-                utm_source: utmParams.utm_source,
-                utm_medium: utmParams.utm_medium,
-                utm_campaign: utmParams.utm_campaign,
-                utm_content: utmParams.utm_content,
-                utm_term: utmParams.utm_term
-            };
-            
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                console.log('✅ Webhook Lead enviado:', data);
-                return response.json();
-            })
-            .then(result => {
-                console.log('✅ Resposta do webhook:', result);
-            })
-            .catch(error => {
-                console.error('❌ Erro ao enviar webhook:', error);
-            });
-        }
-
-        // ========== FIM FUNÇÕES DO FORMULÁRIO ==========
+        // Inicializar
+        window.addEventListener('load', function() {
+            setupWhatsAppButton();
+            createParticles();
+            console.log('✅ Página carregada - Nicho:', NICHO);
+        });
     </script>
 </body>
 </html>

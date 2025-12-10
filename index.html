@@ -591,6 +591,10 @@
         const WHATSAPP_NUMBER = '5571993485126';
         const NICHO = 'bancário';
         
+        // FLAGS DE PREVENÇÃO DE DUPLICAÇÃO
+        let isInitialized = false;
+        let isFormSubmitting = false;
+        
         // ========== SISTEMA DE RASTREAMENTO UTM ==========
         function getUTMParams() {
             const params = new URLSearchParams(window.location.search);
@@ -647,6 +651,7 @@
             document.getElementById('leadForm').reset();
             document.getElementById('nameError').classList.remove('show');
             document.getElementById('phoneError').classList.remove('show');
+            isFormSubmitting = false;
         }
 
         function validateForm() {
@@ -682,9 +687,16 @@
         function handleFormSubmit(e) {
             e.preventDefault();
             
+            // Prevenir múltiplos submits
+            if (isFormSubmitting) {
+                return;
+            }
+            
             if (!validateForm()) {
                 return;
             }
+            
+            isFormSubmitting = true;
             
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
@@ -735,12 +747,17 @@
 
         // ========== INICIALIZAÇÃO ==========
         function setupWhatsAppButton() {
+            if (isInitialized) return;
+            
             const btn = document.getElementById('whatsappBtn');
             btn.removeAttribute('href');
+            
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 openFormModal();
             });
+            
+            isInitialized = true;
         }
 
         // Criar partículas - reduzido para 15 no mobile

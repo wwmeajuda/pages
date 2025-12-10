@@ -152,6 +152,9 @@
         const WHATSAPP_NUMBER = '5592981112555';
         // FIM CONFIGURAÇÃO: NÚMERO DO WHATSAPP
         
+        // Flag para prevenir inicialização duplicada
+        let isInitialized = false;
+        
         // Criar partículas (menos no mobile para performance)
         function createParticles() {
             const container = document.getElementById('particles');
@@ -170,6 +173,8 @@
 
         // Configurar botão WhatsApp
         function setupWhatsAppButton() {
+            if (isInitialized) return;
+            
             const btn = document.getElementById('whatsappBtn');
             const message = 'Preciso falar com Dr Daniel! Estou com problemas bancários.';
             const encodedMessage = encodeURIComponent(message);
@@ -197,6 +202,8 @@
                     });
                 }
             });
+            
+            isInitialized = true;
         }
 
         // Inicializar (otimizado)

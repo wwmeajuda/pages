@@ -506,6 +506,15 @@
       color:#047857;
       letter-spacing:-.08em;
     }
+    .percent-badge--muted{
+      background:linear-gradient(180deg,#FEF3C7,#FDE68A);
+      box-shadow:0 18px 40px rgba(245,158,11,.20);
+      border:1px solid rgba(245,158,11,.18);
+    }
+    .percent-number--muted{
+      color:#B45309;
+      letter-spacing:0;
+    }
     .final-copy{
       color:var(--muted);
       font-size:15px;
@@ -714,6 +723,15 @@
           <a class="whatsapp-cta" id="whatsAppBtn" href="#" target="_blank" rel="noopener">Analisar meu caso!</a>
         </div>
       </section>
+
+      <section class="screen" data-step="6">
+        <div class="panel final-wrap">
+          <div class="step-label">Agradecemos o contato</div>
+          <div class="percent-badge percent-badge--muted"><div class="percent-number percent-number--muted">!</div></div>
+          <h2>Pelo tempo informado, você não consegue mais ter direito à indenização.</h2>
+          <p class="final-copy">Agradecemos o seu contato.</p>
+        </div>
+      </section>
     </main>
 
   </div>
@@ -726,13 +744,14 @@
     const PIXEL_ID = "";
     const GA_ID = "";
 
-    const progressTargets = { 0: 0, 1: 20, 2: 45, 3: 70, 4: 90, 5: 100 };
+    const progressTargets = { 0: 0, 1: 20, 2: 45, 3: 70, 4: 90, 5: 100, 6: 100 };
     const loadingMessages = ["Analisando seu caso...", "Verificando seus direitos...", "Quase lá..."];
     const toastMessages = {
       1: "Anotado 💪",
       2: "Você está indo bem 🎯",
       4: "Falta muito pouco 🚀",
-      5: "Agora é só concluir no WhatsApp ✅"
+      5: "Agora é só concluir no WhatsApp ✅",
+      6: "Obrigado pelo contato 🙏"
     };
 
     const state = {
@@ -814,7 +833,13 @@
         if (state.answers.caseType) goToStep(2);
       });
       nextStep2.addEventListener('click', () => {
-        if (state.answers.whenHappened) goToStep(3);
+        if (!state.answers.whenHappened) return;
+        if (state.answers.whenHappened === 'Faz mais de 5 anos') {
+          trackEvent('quiz_ineligible', { reason: 'older_than_5_years' });
+          goToStep(6);
+          return;
+        }
+        goToStep(3);
       });
     }
 

@@ -506,6 +506,46 @@
       color:var(--ink);
       transition:border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
     }
+    .field-with-suggestions{
+      position:relative;
+    }
+    .email-suggestions{
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 8px);
+      display:grid;
+      gap:8px;
+      padding:10px;
+      border-radius:16px;
+      background:rgba(255,255,255,.98);
+      border:1px solid rgba(37,99,235,.12);
+      box-shadow:0 18px 30px rgba(15,23,42,.10);
+      z-index:8;
+    }
+    .email-suggestions[hidden]{display:none}
+    .email-suggestion{
+      width:100%;
+      min-height:44px;
+      border-radius:12px;
+      border:1px solid rgba(37,99,235,.08);
+      background:#F8FBFF;
+      color:#0F172A;
+      text-align:left;
+      padding:10px 12px;
+      font-size:14px;
+      font-weight:800;
+      transition:transform .15s var(--ease), border-color .15s var(--ease), background .15s var(--ease);
+    }
+    .email-suggestion:active,
+    .email-suggestion:hover{
+      transform:scale(.98);
+      border-color:rgba(37,99,235,.24);
+      background:#EFF6FF;
+    }
+    .email-suggestion strong{
+      color:var(--primary-strong);
+    }
     .field input:focus{
       border-color:var(--primary);
       box-shadow:0 0 0 4px rgba(37,99,235,.10);
@@ -749,7 +789,10 @@
 
               <div class="field" id="fieldEmail">
                 <label for="email">E-mail</label>
-                <input id="email" name="email" type="email" autocomplete="email" inputmode="email">
+                <div class="field-with-suggestions">
+                  <input id="email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false">
+                  <div class="email-suggestions" id="emailSuggestions" hidden></div>
+                </div>
                 <div class="hint" id="emailHint"></div>
               </div>
             </div>
@@ -792,6 +835,7 @@
 
     const progressTargets = { 0: 0, 1: 20, 2: 45, 3: 70, 4: 90, 5: 100, 6: 100 };
     const loadingMessages = ["Analisando seu caso...", "Verificando seus direitos...", "Quase lá..."];
+    const emailProviders = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com.br', 'icloud.com', 'uol.com.br'];
     const toastMessages = {
       1: "Anotado 💪",
       2: "Você está indo bem 🎯",
@@ -830,6 +874,7 @@
     const loadingFill = document.getElementById('loadingFill');
     const finalPercent = document.getElementById('finalPercent');
     const leadForm = document.getElementById('leadForm');
+    const emailSuggestions = document.getElementById('emailSuggestions');
     const startBtn = document.getElementById('startBtn');
     const nextStep1 = document.getElementById('nextStep1');
     const nextStep2 = document.getElementById('nextStep2');
@@ -951,7 +996,14 @@
         validateForm();
       });
       fullNameInput.addEventListener('input', validateForm);
-      emailInput.addEventListener('input', validateForm);
+      emailInput.addEventListener('input', () => {
+        validateForm();
+        renderEmailSuggestions();
+      });
+      emailInput.addEventListener('focus', renderEmailSuggestions);
+      emailInput.addEventListener('blur', () => {
+        window.setTimeout(hideEmailSuggestions, 140);
+      });
 
       leadForm.addEventListener('submit', async event => {
         event.preventDefault();
@@ -983,6 +1035,66 @@
 
       submitLead.disabled = !(nameValid && phoneValid && emailValid);
       return nameValid && phoneValid && emailValid;
+    }
+
+    function renderEmailSuggestions(){
+      const suggestions = getEmailSuggestions(emailInput.value);
+      if (!suggestions.length) {
+        hideEmailSuggestions();
+        return;
+      }
+
+      emailSuggestions.innerHTML = suggestions.map(suggestion => {
+        const [localPart, domainPart] = suggestion.split('@');
+        return `<button class="email-suggestion" type="button" data-email="${escapeHtml(suggestion)}"><span>${escapeHtml(localPart)}@<strong>${escapeHtml(domainPart)}</strong></span></button>`;
+      }).join('');
+
+      emailSuggestions.hidden = false;
+      emailSuggestions.querySelectorAll('.email-suggestion').forEach(button => {
+        button.addEventListener('mousedown', event => {
+          event.preventDefault();
+          applyEmailSuggestion(button.dataset.email);
+        });
+      });
+    }
+
+    function getEmailSuggestions(rawValue){
+      const value = rawValue.trim().toLowerCase();
+      if (!value || /\s/.test(value)) return [];
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value)) return [];
+
+      const hasAt = value.includes('@');
+      const [localPart, domainPart = ''] = value.split('@');
+      if (!localPart || localPart.length < 2) return [];
+
+      const suggestions = emailProviders
+        .filter(provider => !hasAt || provider.startsWith(domainPart))
+        .map(provider => `${localPart}@${provider}`)
+        .filter((suggestion, index, array) => suggestion !== value && array.indexOf(suggestion) === index)
+        .slice(0, 5);
+
+      return suggestions;
+    }
+
+    function applyEmailSuggestion(email){
+      emailInput.value = email;
+      hideEmailSuggestions();
+      validateForm();
+      emailInput.focus();
+    }
+
+    function hideEmailSuggestions(){
+      emailSuggestions.hidden = true;
+      emailSuggestions.innerHTML = '';
+    }
+
+    function escapeHtml(value){
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
     }
 
     function toggleFieldState(fieldId, hintId, message){

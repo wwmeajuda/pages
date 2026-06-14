@@ -1,834 +1,1173 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0F172A">
-  <meta name="description" content="Quiz gratuito para passageiros com atraso, cancelamento, overbooking ou problema com bagagem descobrirem se o relato é elegível para análise jurídica.">
-  <title>Quiz Direitos do Passageiro Aéreo | Me Ajuda</title>
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Quiz de captação para passageiros com problemas com companhia aérea.">
+  <title>Quiz Passageiro Aéreo</title>
   <style>
     :root{
-      --primary:#2563EB;
-      --primary-dark:#1D4ED8;
-      --primary-soft:#DBEAFE;
-      --success:#10B981;
-      --success-dark:#059669;
-      --success-soft:#D1FAE5;
-      --danger:#EF4444;
-      --danger-soft:#FEE2E2;
+      --bg:#F8FAFC;
+      --surface:#FFFFFF;
+      --surface-soft:#F1F5F9;
       --ink:#0F172A;
       --muted:#64748B;
-      --line:#D8E2F0;
-      --panel:#FFFFFF;
-      --bg:#F5F8FC;
-      --dark:#07111F;
-      --shadow:0 18px 50px rgba(15,23,42,.12);
-      --radius:24px;
-      --ease:cubic-bezier(.22,1,.36,1);
+      --line:#DBE4F0;
+      --primary:#2563EB;
+      --primary-strong:#1D4ED8;
+      --primary-soft:#DBEAFE;
+      --success:#10B981;
+      --success-soft:#DCFCE7;
+      --gold:#F59E0B;
+      --danger:#EF4444;
+      --shadow:0 22px 54px rgba(15,23,42,.12);
+      --shadow-strong:0 20px 40px rgba(37,99,235,.22);
+      --radius:20px;
+      --radius-lg:28px;
+      --topbar-h:86px;
+      --ease:cubic-bezier(.25,.8,.25,1);
+      --ease-soft:cubic-bezier(.22,1,.36,1);
     }
 
     *{box-sizing:border-box}
-    html{height:100%;scroll-behavior:smooth;background:var(--bg)}
+    html,body{margin:0;padding:0;min-height:100%;background:var(--bg);overflow-x:hidden}
     body{
-      min-height:100%;
-      margin:0;
       font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(circle at 16% 0%,rgba(37,99,235,.14),transparent 34%),
-        radial-gradient(circle at 88% 18%,rgba(16,185,129,.12),transparent 34%),
-        linear-gradient(180deg,#FFFFFF 0%,#F5F8FC 45%,#EEF4FB 100%);
-      overflow-x:hidden;
+        radial-gradient(circle at top left, rgba(37,99,235,.10), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(16,185,129,.10), transparent 22%),
+        linear-gradient(180deg,#FFFFFF 0%, #F8FAFC 100%);
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
     }
 
     button,input{font:inherit}
-    button{cursor:pointer}
-    button:focus-visible,input:focus-visible{outline:3px solid rgba(37,99,235,.45);outline-offset:3px}
-    a{color:inherit}
+    button{border:none;cursor:pointer}
+    button:focus-visible,input:focus-visible,a:focus-visible{
+      outline:3px solid rgba(37,99,235,.35);
+      outline-offset:3px;
+    }
 
-    .app-shell{min-height:100svh;position:relative;overflow:hidden;padding-top:76px}
+    .app{
+      min-height:100svh;
+      padding-top:var(--topbar-h);
+      position:relative;
+    }
 
     .topbar{
       position:fixed;
-      z-index:20;
-      top:0;
-      left:0;
-      width:100%;
-      padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
-      background:rgba(7,17,31,.88);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-      box-shadow:0 10px 26px rgba(7,17,31,.18);
+      inset:0 0 auto 0;
+      z-index:50;
+      padding:calc(12px + env(safe-area-inset-top)) 16px 14px;
+      background:rgba(15,23,42,.88);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      box-shadow:0 10px 30px rgba(15,23,42,.20);
+    }
+
+    .topbar-inner{
+      width:min(100%, 720px);
+      margin:0 auto;
+      display:grid;
+      gap:10px;
+    }
+
+    .topbar-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
       color:#fff;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
     }
-    .topbar-row{display:flex;align-items:center;gap:10px;max-width:760px;margin:0 auto 9px}
-    .brand-mark{
-      width:34px;height:34px;border-radius:12px;
-      display:grid;place-items:center;
+
+    .topbar-title{display:flex;align-items:center;gap:10px;min-width:0}
+    .topbar-badge{
+      width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
       background:linear-gradient(135deg,var(--primary),var(--success));
-      box-shadow:0 10px 20px rgba(37,99,235,.3);
+      box-shadow:0 12px 24px rgba(37,99,235,.28);
+      font-size:18px;
+    }
+
+    .progress-shell{
+      display:flex;align-items:center;gap:12px;
+    }
+    .progress-track{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      overflow:hidden;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .progress-fill{
+      height:100%;
+      width:0%;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--success),var(--gold));
+      transition:width .6s cubic-bezier(.25,.8,.25,1);
+      box-shadow:0 0 16px rgba(16,185,129,.55);
+    }
+    .progress-value{
+      min-width:44px;
+      color:#D1FAE5;
+      font-size:13px;
       font-weight:900;
-      letter-spacing:-.04em;
+      text-align:right;
     }
-    .brand-copy{min-width:0;line-height:1.1;flex:1}
-    .brand-name{font-size:13px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
-    .brand-sub{font-size:11px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .sound-toggle{
-      min-width:42px;height:38px;border:1px solid rgba(255,255,255,.18);
-      border-radius:999px;background:rgba(255,255,255,.09);color:#fff;
-      display:grid;place-items:center;transition:transform .18s var(--ease),background .18s var(--ease);
-    }
-    .sound-toggle:active{transform:scale(.96)}
-    .progress-wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px}
-    .progress-track{height:9px;flex:1;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-    .progress-fill{height:100%;width:5%;border-radius:999px;background:linear-gradient(90deg,var(--success),#34D399);transition:width .45s var(--ease);box-shadow:0 0 16px rgba(16,185,129,.7)}
-    .progress-label{min-width:38px;text-align:right;font-size:12px;font-weight:800;color:#D1FAE5}
 
+    .toast-stack{
+      position:fixed;
+      top:calc(var(--topbar-h) + env(safe-area-inset-top) - 2px);
+      left:50%;
+      transform:translateX(-50%);
+      z-index:60;
+      width:min(92vw,420px);
+      pointer-events:none;
+    }
     .toast{
-      position:fixed;z-index:30;top:calc(82px + env(safe-area-inset-top));left:50%;
-      transform:translate(-50%,-16px) scale(.98);
-      max-width:min(92vw,420px);padding:11px 14px;border-radius:999px;
-      background:rgba(255,255,255,.92);border:1px solid rgba(37,99,235,.14);
-      color:#10203A;font-weight:750;font-size:14px;text-align:center;
-      box-shadow:0 16px 38px rgba(15,23,42,.18);
-      opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(-18px) scale(.98);
+      padding:12px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.95);
+      color:#10203A;
+      font-size:14px;
+      font-weight:800;
+      text-align:center;
+      border:1px solid rgba(37,99,235,.16);
+      box-shadow:0 16px 32px rgba(15,23,42,.14);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
     }
-    .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+    .toast.show{animation:toastIn 1.5s var(--ease-soft) forwards}
 
-    .steps{position:relative;min-height:calc(100svh - 76px)}
-    .step{
-      position:absolute;inset:0;width:100%;min-height:calc(100svh - 76px);
-      display:flex;align-items:stretch;justify-content:center;
-      padding:18px 16px calc(22px + env(safe-area-inset-bottom));
-      opacity:0;visibility:hidden;transform:translateX(38px);
-      transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s;
-      overflow-y:auto;overscroll-behavior:contain;
+    .viewport{
+      width:min(100%,720px);
+      margin:0 auto;
+      padding:18px 16px calc(28px + env(safe-area-inset-bottom));
+      position:relative;
+      min-height:calc(100svh - var(--topbar-h));
     }
-    .step.active{opacity:1;visibility:visible;transform:translateX(0);z-index:2}
-    .step.prev{transform:translateX(-38px)}
 
-    .card{
-      width:100%;max-width:560px;margin:auto;
-      background:rgba(255,255,255,.92);border:1px solid rgba(216,226,240,.88);
-      border-radius:var(--radius);box-shadow:var(--shadow);
-      padding:24px 18px;position:relative;overflow:hidden;
+    .screen{
+      position:absolute;
+      inset:18px 16px calc(28px + env(safe-area-inset-bottom)) 16px;
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--primary),var(--success));opacity:.95}
-    .hero-card{
-      color:#fff;background:
-        radial-gradient(circle at 80% 12%,rgba(16,185,129,.22),transparent 28%),
-        radial-gradient(circle at 12% 12%,rgba(37,99,235,.35),transparent 38%),
-        linear-gradient(160deg,#07111F 0%,#0F2342 58%,#0B1728 100%);
-      border-color:rgba(255,255,255,.12);
-      padding-top:26px;
+    .screen.active{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      animation:slideFadeIn .35s ease-out forwards;
+      z-index:2;
     }
+    .screen.exiting{
+      opacity:1;
+      visibility:visible;
+      pointer-events:none;
+      animation:slideFadeOut .32s ease-out forwards;
+      z-index:3;
+    }
+
+    .panel{
+      width:100%;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(219,228,240,.95);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow);
+      padding:22px 18px 20px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--success),var(--gold));
+    }
+
+    .hero{
+      background:
+        radial-gradient(circle at top right, rgba(16,185,129,.16), transparent 30%),
+        radial-gradient(circle at top left, rgba(37,99,235,.18), transparent 38%),
+        linear-gradient(180deg,#FFFFFF 0%, #F8FBFF 100%);
+    }
+
     .eyebrow{
-      display:inline-flex;align-items:center;gap:7px;
-      border:1px solid rgba(37,99,235,.22);background:rgba(37,99,235,.08);
-      color:var(--primary-dark);font-size:12px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;
-      padding:8px 11px;border-radius:999px;margin-bottom:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary-strong);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin-bottom:14px;
     }
-    .hero-card .eyebrow{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16);color:#DDEBFF}
-    h1,h2{margin:0;line-height:1.03;letter-spacing:-.045em;color:var(--ink)}
-    .hero-card h1{color:#fff;font-size:clamp(30px,8vw,42px)}
-    h2{font-size:clamp(28px,7vw,38px)}
-    .lead{font-size:17px;line-height:1.48;color:var(--muted);margin:14px 0 0}
-    .hero-card .lead{color:rgba(255,255,255,.82)}
 
-    .proof-list{display:grid;gap:10px;margin:20px 0 0;padding:0;list-style:none}
-    .proof-list li{
-      display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:16px;
-      background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);
-      color:rgba(255,255,255,.9);font-weight:650;font-size:14px;
+    h1,h2,p{margin:0}
+    h1{
+      font-size:clamp(28px,8vw,32px);
+      line-height:1.06;
+      letter-spacing:-.05em;
+      font-weight:900;
     }
-    .proof-list span{flex:none;width:24px;height:24px;border-radius:999px;background:rgba(16,185,129,.18);display:grid;place-items:center;color:#86EFAC;font-weight:900}
-    .social-proof{
-      margin-top:18px;padding:12px;border-radius:18px;background:rgba(255,255,255,.1);
-      border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:space-between;gap:12px;
+    h2{
+      font-size:clamp(28px,8vw,32px);
+      line-height:1.08;
+      letter-spacing:-.05em;
+      font-weight:900;
+      margin-bottom:10px;
     }
-    .social-proof strong{font-size:26px;line-height:1;color:#A7F3D0}
-    .social-proof small{display:block;color:rgba(255,255,255,.72);font-weight:650;line-height:1.25}
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+      margin-top:12px;
+    }
 
-    .btn{
-      width:100%;min-height:58px;border:0;border-radius:18px;padding:15px 18px;
-      background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-      color:#fff;font-weight:900;font-size:16px;letter-spacing:-.01em;
-      display:flex;align-items:center;justify-content:center;gap:9px;
-      box-shadow:0 16px 30px rgba(37,99,235,.28);
-      transition:transform .16s var(--ease),filter .16s var(--ease),box-shadow .16s var(--ease),opacity .16s var(--ease);
+    .bullet-list,
+    .options{
+      display:grid;
+      gap:12px;
       margin-top:22px;
     }
-    .btn:active{transform:scale(.98);filter:saturate(1.12)}
-    .btn:disabled{opacity:.48;box-shadow:none;cursor:not-allowed;transform:none}
-    .btn.success{background:linear-gradient(135deg,var(--success),var(--success-dark));box-shadow:0 16px 30px rgba(16,185,129,.28)}
-    .btn.ghost{background:#fff;color:var(--primary);border:1px solid rgba(37,99,235,.22);box-shadow:none}
 
-    .question-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .step-pill{flex:none;border-radius:999px;background:var(--primary-soft);color:var(--primary-dark);font-weight:900;font-size:12px;padding:8px 10px}
-    .options{display:grid;gap:11px;margin-top:20px}
-    .option{
-      min-height:58px;width:100%;border:1.5px solid rgba(37,99,235,.35);
-      border-radius:17px;background:#fff;color:#10203A;text-align:left;padding:14px 48px 14px 14px;
-      font-weight:780;line-height:1.22;position:relative;box-shadow:0 8px 24px rgba(15,23,42,.05);
-      transition:transform .16s var(--ease),background .16s var(--ease),border-color .16s var(--ease),box-shadow .16s var(--ease);
+    .bullet-item,
+    .option-card{
+      opacity:0;
+      transform:translateY(16px);
+      animation:fadeUp .45s var(--ease-soft) forwards;
     }
-    .option::after{
-      content:"";position:absolute;right:14px;top:50%;width:22px;height:22px;border-radius:999px;
-      transform:translateY(-50%);border:2px solid rgba(37,99,235,.32);background:#fff;
+
+    .bullet-item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px 14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(37,99,235,.10);
+      box-shadow:0 10px 24px rgba(15,23,42,.06);
+      font-size:15px;
+      line-height:1.45;
+      font-weight:700;
     }
-    .option:active{transform:scale(.985)}
-    .option.selected{background:linear-gradient(180deg,#EFF6FF,#FFFFFF);border-color:var(--primary);box-shadow:0 12px 28px rgba(37,99,235,.14)}
-    .option.selected::after{content:"✓";display:grid;place-items:center;border-color:var(--success);background:var(--success);color:#fff;font-size:14px;font-weight:1000}
 
-    .loading-stack{display:grid;place-items:center;text-align:center;padding:12px 0 2px}
-    .plane-orbit{width:112px;height:112px;border-radius:999px;border:7px solid #E0ECFF;border-top-color:var(--primary);border-right-color:var(--success);animation:spin 1s linear infinite;position:relative;margin:10px auto 20px}
-    .plane-orbit::after{content:"✈️";position:absolute;left:50%;top:-19px;transform:translateX(-50%);font-size:26px;animation:counterSpin 1s linear infinite}
-    .loading-msg{min-height:50px;font-size:19px;font-weight:900;color:#10203A;line-height:1.25}
-    .mini-progress{width:100%;height:12px;border-radius:999px;background:#E8EEF7;margin-top:18px;overflow:hidden}
-    .mini-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--success));border-radius:inherit;animation:loadGrow 2.7s var(--ease) forwards}
+    .option-card{
+      position:relative;
+      min-height:64px;
+      width:100%;
+      text-align:left;
+      padding:16px 56px 16px 16px;
+      border-radius:18px;
+      background:#fff;
+      border:1.5px solid rgba(37,99,235,.18);
+      color:#10203A;
+      box-shadow:0 12px 24px rgba(15,23,42,.06);
+      overflow:hidden;
+      transition:transform .15s var(--ease), box-shadow .15s var(--ease), border-color .18s var(--ease), background .18s var(--ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+    .option-card:hover,
+    .option-card:active{
+      transform:scale(.98);
+      box-shadow:0 18px 34px rgba(37,99,235,.18);
+    }
+    .option-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, rgba(37,99,235,.08), rgba(37,99,235,0));
+      opacity:0;
+      transition:opacity .18s var(--ease);
+    }
+    .option-card::after{
+      content:"";
+      position:absolute;
+      right:16px;
+      top:50%;
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      border:2px solid rgba(37,99,235,.22);
+      background:#fff;
+      transform:translateY(-50%);
+      transition:all .18s var(--ease);
+    }
+    .option-card.selected{
+      border-color:var(--primary);
+      background:#EFF6FF;
+      box-shadow:0 18px 32px rgba(37,99,235,.18);
+    }
+    .option-card.selected::before{opacity:1}
+    .option-card.selected::after{
+      content:"✓";
+      display:grid;
+      place-items:center;
+      border-color:var(--primary);
+      background:var(--primary);
+      color:#fff;
+      font-weight:900;
+      font-size:14px;
+      animation:pop .3s ease-out;
+    }
+    .option-copy{position:relative;z-index:2;font-weight:800;line-height:1.35}
 
+    .ripple{
+      position:absolute;
+      border-radius:50%;
+      transform:translate(-50%,-50%) scale(0);
+      background:rgba(37,99,235,.18);
+      pointer-events:none;
+      animation:rippleBurst .55s ease-out forwards;
+    }
+
+    .step-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#EEF2FF;
+      color:var(--primary-strong);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .cta,
+    .whatsapp-cta{
+      position:relative;
+      min-height:58px;
+      width:100%;
+      border-radius:18px;
+      padding:16px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      overflow:hidden;
+      isolation:isolate;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      color:#fff;
+      transform:translateZ(0);
+      animation:pulse 2s ease-in-out infinite;
+      transition:transform .15s var(--ease), filter .15s var(--ease), box-shadow .15s var(--ease), opacity .15s var(--ease), background .15s var(--ease);
+      box-shadow:var(--shadow-strong);
+      margin-top:22px;
+      text-decoration:none;
+    }
+    .cta{background:linear-gradient(135deg,var(--primary),var(--primary-strong))}
+    .whatsapp-cta{background:linear-gradient(135deg,#25D366,#16A34A)}
+    .cta:active,
+    .whatsapp-cta:active{transform:scale(.96)}
+    .cta:disabled{
+      opacity:.48;
+      box-shadow:none;
+      cursor:not-allowed;
+      animation:none;
+    }
+    .cta::before,
+    .whatsapp-cta::before{
+      content:"";
+      position:absolute;
+      inset:-40% auto -40% -25%;
+      width:42%;
+      transform:translateX(-170%) rotate(18deg);
+      background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.45), rgba(255,255,255,0));
+      animation:shine 3s linear infinite;
+      z-index:-1;
+    }
+
+    .microcopy{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      text-align:center;
+      font-weight:700;
+    }
+
+    .loader-wrap{
+      display:grid;
+      place-items:center;
+      text-align:center;
+      min-height:360px;
+      gap:18px;
+      padding:18px 6px;
+    }
+    .spinner{
+      width:96px;
+      height:96px;
+      border-radius:50%;
+      border:8px solid rgba(37,99,235,.14);
+      border-top-color:var(--primary);
+      border-right-color:var(--success);
+      animation:spin 1s linear infinite;
+      position:relative;
+    }
+    .spinner::after{
+      content:"✈️";
+      position:absolute;
+      left:50%;
+      top:-18px;
+      transform:translateX(-50%);
+      font-size:24px;
+      animation:counterSpin 1s linear infinite;
+    }
+    .loading-text{
+      min-height:32px;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:-.03em;
+      transition:opacity .25s var(--ease), transform .25s var(--ease);
+    }
+    .loading-text.fade{opacity:.18;transform:translateY(6px)}
+    .loading-bar{
+      width:min(100%,320px);
+      height:12px;
+      border-radius:999px;
+      background:#E2E8F0;
+      overflow:hidden;
+      box-shadow:inset 0 0 0 1px rgba(15,23,42,.04);
+    }
+    .loading-fill{
+      width:0%;
+      height:100%;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--primary),var(--success),var(--gold));
+      transition:width .2s linear;
+    }
+
+    .form-grid{
+      display:grid;
+      gap:14px;
+      margin-top:18px;
+    }
+    .field{display:grid;gap:7px}
+    .field label{
+      font-size:13px;
+      font-weight:900;
+      color:#1E293B;
+    }
+    .field input{
+      width:100%;
+      height:56px;
+      border-radius:16px;
+      border:1.5px solid #CBD5E1;
+      background:#fff;
+      padding:0 14px;
+      font-size:16px;
+      color:var(--ink);
+      transition:border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+    }
+    .field input:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(37,99,235,.10);
+    }
+    .field.error input{
+      border-color:var(--danger);
+      background:#FEF2F2;
+    }
+    .hint{
+      min-height:16px;
+      color:var(--danger);
+      font-size:12px;
+      font-weight:700;
+    }
+    .privacy-note{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin-top:10px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#F0FDF4;
+      border:1px solid #BBF7D0;
+      color:#166534;
+      font-size:13px;
+      line-height:1.45;
+      font-weight:700;
+    }
+
+    .final-wrap{text-align:center}
+    .percent-badge{
+      margin:8px auto 18px;
+      width:112px;height:112px;border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(180deg,#ECFDF5,#D1FAE5);
+      box-shadow:0 18px 34px rgba(16,185,129,.22);
+      border:1px solid rgba(16,185,129,.18);
+    }
+    .percent-number{
+      font-size:38px;
+      font-weight:1000;
+      color:#047857;
+      letter-spacing:-.08em;
+    }
+    .final-copy{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+      margin-top:10px;
+      font-weight:700;
+    }
+
+    .fixed-footer{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      z-index:40;
+      padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+      pointer-events:none;
+    }
+    .footer-chip{
+      width:min(100%,720px);
+      margin:0 auto;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(219,228,240,.96);
+      box-shadow:0 18px 30px rgba(15,23,42,.12);
+      border-radius:18px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      pointer-events:auto;
+    }
+    .footer-chip strong{font-size:13px;display:block}
+    .footer-chip small{color:var(--muted);font-size:12px;display:block;margin-top:2px}
+    .footer-link{
+      flex:none;
+      min-height:44px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#25D366;
+      color:#fff;
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+    }
+
+    @keyframes slideFadeIn{
+      from{transform:translateX(40px);opacity:0}
+      to{transform:translateX(0);opacity:1}
+    }
+    @keyframes slideFadeOut{
+      from{transform:translateX(0);opacity:1}
+      to{transform:translateX(-40px);opacity:0}
+    }
+    @keyframes fadeUp{
+      from{transform:translateY(16px);opacity:0}
+      to{transform:translateY(0);opacity:1}
+    }
+    @keyframes pop{
+      0%{transform:translateY(-50%) scale(0)}
+      70%{transform:translateY(-50%) scale(1.2)}
+      100%{transform:translateY(-50%) scale(1)}
+    }
+    @keyframes rippleBurst{
+      0%{opacity:.5;transform:translate(-50%,-50%) scale(0)}
+      100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.03)}
+    }
+    @keyframes shine{
+      0%{transform:translateX(-170%) rotate(18deg)}
+      20%,100%{transform:translateX(340%) rotate(18deg)}
+    }
     @keyframes spin{to{transform:rotate(360deg)}}
     @keyframes counterSpin{to{transform:translateX(-50%) rotate(-360deg)}}
-    @keyframes loadGrow{to{width:100%}}
-
-    .result-icon{
-      width:86px;height:86px;border-radius:999px;margin:0 auto 18px;display:grid;place-items:center;
-      background:var(--success-soft);color:var(--success-dark);font-size:44px;font-weight:1000;
-      box-shadow:0 18px 34px rgba(16,185,129,.22);animation:pop .72s var(--ease) both;
+    @keyframes toastIn{
+      0%{opacity:0;transform:translateY(-18px) scale(.98)}
+      12%,74%{opacity:1;transform:translateY(0) scale(1)}
+      100%{opacity:0;transform:translateY(-14px) scale(.98)}
     }
-    .result-icon.neutral{background:#EAF1FB;color:var(--primary);box-shadow:0 18px 34px rgba(37,99,235,.14)}
-    @keyframes pop{0%{transform:scale(.62);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
-
-    .form{display:grid;gap:14px;margin-top:18px}
-    .field label{display:block;font-size:13px;font-weight:850;color:#20324E;margin:0 0 7px}
-    .field input{
-      width:100%;height:56px;border:1.5px solid #CBD8EA;border-radius:16px;background:#fff;
-      padding:0 14px;color:var(--ink);font-size:16px;transition:border-color .16s var(--ease),box-shadow .16s var(--ease),background .16s var(--ease);
-    }
-    .field input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.12)}
-    .field.invalid input{border-color:var(--danger);background:#FFF7F7}
-    .error{min-height:18px;margin-top:5px;color:var(--danger);font-size:12px;font-weight:720}
-    .safe-copy{display:flex;gap:9px;align-items:flex-start;margin-top:4px;padding:11px 12px;border-radius:16px;background:#F0FDF4;color:#14532D;border:1px solid #BBF7D0;font-size:13px;font-weight:700;line-height:1.35}
-
-    .final-meter{text-align:center;margin:8px 0 18px}
-    .final-number{font-size:62px;line-height:1;font-weight:1000;letter-spacing:-.08em;color:var(--success-dark)}
-    .final-meter span{display:block;color:var(--muted);font-weight:800;margin-top:6px}
-    .whatsapp-note{font-size:13px;line-height:1.35;color:var(--muted);text-align:center;margin-top:10px}
-
-    .footer-identity{
-      margin-top:18px;padding:12px;border-radius:18px;background:rgba(15,23,42,.04);
-      display:flex;align-items:center;gap:11px;border:1px solid rgba(15,23,42,.06)
-    }
-    .avatar-placeholder{width:42px;height:42px;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--success));display:grid;place-items:center;color:#fff;font-weight:1000;flex:none}
-    .footer-identity strong{display:block;font-size:13px;color:#172033}.footer-identity small{display:block;color:var(--muted);font-size:12px;line-height:1.3;margin-top:2px}
-
-    .milestone{
-      position:fixed;z-index:35;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);
-      width:min(88vw,360px);background:#fff;border-radius:26px;padding:22px 18px;text-align:center;
-      box-shadow:0 24px 70px rgba(15,23,42,.24);border:1px solid rgba(16,185,129,.22);
-      opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)
-    }
-    .milestone.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-    .milestone b{display:block;font-size:26px;letter-spacing:-.04em}.milestone p{margin:7px 0 0;color:var(--muted);font-weight:700}
-
-    #confettiCanvas{position:fixed;inset:0;z-index:25;pointer-events:none;width:100%;height:100%}
 
     @media (min-width:700px){
-      .app-shell{padding-top:82px}.step{padding:28px 22px}.card{padding:34px 30px}.hero-card h1{font-size:46px}.proof-list{grid-template-columns:1fr 1fr}.options{gap:13px}.option:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(37,99,235,.12)}
+      .viewport{padding-left:20px;padding-right:20px}
+      .screen{inset:22px 20px calc(30px + env(safe-area-inset-bottom)) 20px}
+      .panel{padding:28px 26px 24px}
     }
-    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+        scroll-behavior:auto !important;
+      }
+      .cta,.whatsapp-cta{animation:none !important}
+    }
   </style>
 </head>
 <body>
-  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
-
-  <div class="topbar" role="banner">
-    <div class="topbar-row">
-      <div class="brand-mark" aria-hidden="true">M</div>
-      <div class="brand-copy">
-        <div class="brand-name">Me Ajuda</div>
-        <div class="brand-sub">Análise gratuita para passageiros aéreos</div>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-head">
+          <div class="topbar-title">
+            <div class="topbar-badge">✈️</div>
+            <div>Quiz de análise</div>
+          </div>
+          <div>Passageiro aéreo</div>
+        </div>
+        <div class="progress-shell" aria-label="Progresso do quiz">
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-value" id="progressValue">0%</div>
+        </div>
       </div>
-      <button class="sound-toggle" id="soundToggle" type="button" aria-label="Ativar ou desativar som">🔊</button>
-    </div>
-    <div class="progress-wrap" aria-label="Progresso do quiz">
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-label" id="progressLabel">5%</div>
-    </div>
-  </div>
+    </header>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <div class="milestone" id="milestone" aria-live="polite"><b>Metade do caminho 🎯</b><p>Seu relato já tem informações importantes para a análise.</p></div>
+    <div class="toast-stack"><div class="toast" id="toast"></div></div>
 
-  <main class="app-shell">
-    <div class="steps" id="steps">
-      <section class="step active" data-step="0" aria-labelledby="step0-title">
-        <div class="card hero-card">
-          <div class="eyebrow">Para quem teve problema com companhias aéreas</div>
-          <h1 id="step0-title">✈️ Seus direitos como passageiro valem dinheiro. Descubra se você tem direito a indenização.</h1>
-          <p class="lead">Responda algumas perguntas rápidas e receba uma análise inicial gratuita sobre atraso, cancelamento, overbooking ou problema com bagagem.</p>
-          <ul class="proof-list" aria-label="Benefícios da análise">
-            <li><span>✓</span><div>Análise gratuita do seu relato, sem custo inicial.</div></li>
-            <li><span>✓</span><div>Atendimento acolhedor para entender o que aconteceu.</div></li>
-            <li><span>✓</span><div>Orientação sobre documentos e próximos passos.</div></li>
-            <li><span>✓</span><div>Resposta rápida pelo WhatsApp após o envio.</div></li>
-          </ul>
-          <div class="social-proof" aria-live="polite">
-            <div><strong id="socialCounter">47</strong><small>passageiros analisaram o caso hoje</small></div>
-            <div aria-hidden="true">🛫</div>
+    <main class="viewport">
+      <section class="screen active" data-step="0">
+        <div class="panel hero">
+          <div class="eyebrow">Análise gratuita</div>
+          <h1>✈️ Seus direitos como passageiro valem dinheiro. Descubra quanto você pode receber.</h1>
+          <div class="bullet-list" id="openBullets">
+            <div class="bullet-item">💵 Fazemos transtorno virar indenização.</div>
+            <div class="bullet-item">🔍 Análise gratuita do seu caso</div>
+            <div class="bullet-item">❌ Não fique no prejuízo calado</div>
+            <div class="bullet-item">✅ Mais de 90% de êxito</div>
+            <div class="bullet-item">➡️ Exclusivo para quem teve problemas com companhias aéreas nos últimos 5 anos.</div>
           </div>
-          <button class="btn" type="button" onclick="startQuiz()" aria-label="Começar análise gratuita">Começar análise gratuita →</button>
+          <button class="cta" id="startBtn" type="button">Quero analisar meu caso →</button>
         </div>
       </section>
 
-      <section class="step" data-step="1" aria-labelledby="step1-title">
-        <div class="card">
-          <div class="question-top"><div><div class="eyebrow">Pergunta 1 de 5</div><h2 id="step1-title">O que aconteceu no seu voo?</h2></div><div class="step-pill">15%</div></div>
-          <p class="lead">Toque na opção que mais parece com o seu caso.</p>
-          <div class="options" role="radiogroup" aria-label="O que aconteceu no seu voo?">
-            <button class="option" type="button" data-key="problema_voo" data-value="Atraso de mais de 4 horas">Atraso de mais de 4 horas</button>
-            <button class="option" type="button" data-key="problema_voo" data-value="Voo cancelado">Voo cancelado</button>
-            <button class="option" type="button" data-key="problema_voo" data-value="Overbooking / fui impedido de embarcar">Overbooking / fui impedido de embarcar</button>
-            <button class="option" type="button" data-key="problema_voo" data-value="Bagagem extraviada (sumiu)">Bagagem extraviada (sumiu)</button>
-            <button class="option" type="button" data-key="problema_voo" data-value="Bagagem danificada">Bagagem danificada</button>
-            <button class="option" type="button" data-key="problema_voo" data-value="Bagagem atrasou e chegou depois">Bagagem atrasou e chegou depois</button>
+      <section class="screen" data-step="1">
+        <div class="panel">
+          <div class="step-label">Pergunta 1</div>
+          <h2>Qual das opções abaixo mais representa o seu caso?</h2>
+          <div class="options" data-question="caseType">
+            <button class="option-card" type="button" data-value="Teve meu voo atrasado por mais de 4 horas"><span class="option-copy">A) Teve meu voo atrasado por mais de 4 horas</span></button>
+            <button class="option-card" type="button" data-value="Tive meu voo cancelado"><span class="option-copy">B) Tive meu voo cancelado</span></button>
+            <button class="option-card" type="button" data-value="Tive minha bagagem extraviada"><span class="option-copy">C) Tive minha bagagem extraviada</span></button>
+            <button class="option-card" type="button" data-value="Tive minha bagagem danificada"><span class="option-copy">D) Tive minha bagagem danificada</span></button>
           </div>
+          <button class="cta" id="nextStep1" type="button" disabled>Avançar</button>
         </div>
       </section>
 
-      <section class="step" data-step="2" aria-labelledby="step2-title">
-        <div class="card">
-          <div class="question-top"><div><div class="eyebrow">Pergunta 2 de 5</div><h2 id="step2-title">Esse voo era nacional ou internacional?</h2></div><div class="step-pill">25%</div></div>
-          <p class="lead">Essa informação ajuda a avaliar o prazo jurídico aplicável.</p>
-          <div class="options" role="radiogroup" aria-label="Esse voo era nacional ou internacional?">
-            <button class="option" type="button" data-key="tipo_voo" data-value="Nacional (dentro do Brasil)">Nacional (dentro do Brasil)</button>
-            <button class="option" type="button" data-key="tipo_voo" data-value="Internacional">Internacional</button>
+      <section class="screen" data-step="2">
+        <div class="panel">
+          <div class="step-label">Pergunta 2</div>
+          <h2>Quando aconteceu esse transtorno?</h2>
+          <div class="options" data-question="whenHappened">
+            <button class="option-card" type="button" data-value="Faz mais de 5 anos"><span class="option-copy">A) Faz mais de 5 anos</span></button>
+            <button class="option-card" type="button" data-value="Menos de 5 anos"><span class="option-copy">B) Menos de 5 anos</span></button>
+            <button class="option-card" type="button" data-value="Foi esse ano"><span class="option-copy">C) Foi esse ano</span></button>
           </div>
+          <button class="cta" id="nextStep2" type="button" disabled>Avançar</button>
         </div>
       </section>
 
-      <section class="step" data-step="3" aria-labelledby="step3-title">
-        <div class="card">
-          <div class="question-top"><div><div class="eyebrow">Pergunta 3 de 5</div><h2 id="step3-title">Quando isso aconteceu?</h2></div><div class="step-pill">35%</div></div>
-          <p class="lead">Não precisa lembrar a data exata agora. Escolha a opção mais próxima.</p>
-          <div class="options" role="radiogroup" aria-label="Quando isso aconteceu?">
-            <button class="option" type="button" data-key="quando_aconteceu" data-value="Esse ano">Esse ano</button>
-            <button class="option" type="button" data-key="quando_aconteceu" data-value="Há menos de 2 anos">Há menos de 2 anos</button>
-            <button class="option" type="button" data-key="quando_aconteceu" data-value="Entre 2 e 5 anos">Entre 2 e 5 anos</button>
-            <button class="option" type="button" data-key="quando_aconteceu" data-value="Há mais de 5 anos">Há mais de 5 anos</button>
+      <section class="screen" data-step="3">
+        <div class="panel">
+          <div class="loader-wrap">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="loading-text" id="loadingText">Analisando seu caso...</div>
+            <div class="loading-bar" aria-hidden="true"><div class="loading-fill" id="loadingFill"></div></div>
           </div>
         </div>
       </section>
 
-      <section class="step" data-step="4" aria-labelledby="step4-title">
-        <div class="card">
-          <div class="question-top"><div><div class="eyebrow">Pergunta 4 de 5</div><h2 id="step4-title">Você tem comprovantes do ocorrido? (passagem, protocolo, fotos da bagagem)</h2></div><div class="step-pill">45%</div></div>
-          <p class="lead">Mesmo que não tenha tudo, seu relato ainda pode ser avaliado.</p>
-          <div class="options" role="radiogroup" aria-label="Você tem comprovantes do ocorrido?">
-            <button class="option" type="button" data-key="comprovantes" data-value="Sim, tenho tudo">Sim, tenho tudo</button>
-            <button class="option" type="button" data-key="comprovantes" data-value="Tenho parte">Tenho parte</button>
-            <button class="option" type="button" data-key="comprovantes" data-value="Não tenho, mas lembro dos detalhes">Não tenho, mas lembro dos detalhes</button>
-          </div>
-        </div>
-      </section>
+      <section class="screen" data-step="4">
+        <div class="panel">
+          <div class="step-label">Quase pronto</div>
+          <h2>Para onde enviamos a análise do seu caso?</h2>
+          <form id="leadForm" novalidate>
+            <div class="form-grid">
+              <div class="field" id="fieldName">
+                <label for="fullName">Nome completo</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name" inputmode="text">
+                <div class="hint" id="nameHint"></div>
+              </div>
 
-      <section class="step" data-step="5" aria-labelledby="step5-title">
-        <div class="card">
-          <div class="question-top"><div><div class="eyebrow">Pergunta 5 de 5</div><h2 id="step5-title">A companhia já te ofereceu alguma compensação?</h2></div><div class="step-pill">55%</div></div>
-          <p class="lead">Essa resposta ajuda a entender se houve tentativa de solução.</p>
-          <div class="options" role="radiogroup" aria-label="A companhia já te ofereceu alguma compensação?">
-            <button class="option" type="button" data-key="compensacao" data-value="Não ofereceram nada">Não ofereceram nada</button>
-            <button class="option" type="button" data-key="compensacao" data-value="Ofereceram voucher/milhas (recusei ou aceitei)">Ofereceram voucher/milhas (recusei ou aceitei)</button>
-            <button class="option" type="button" data-key="compensacao" data-value="Pagaram um valor que achei baixo">Pagaram um valor que achei baixo</button>
-          </div>
-        </div>
-      </section>
+              <div class="field" id="fieldPhone">
+                <label for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="numeric" maxlength="15">
+                <div class="hint" id="phoneHint"></div>
+              </div>
 
-      <section class="step" data-step="6" aria-labelledby="step6-title">
-        <div class="card">
-          <div class="loading-stack">
-            <div class="plane-orbit" aria-hidden="true"></div>
-            <h2 id="step6-title">Estamos analisando seu relato</h2>
-            <div class="loading-msg" id="loadingMsg" aria-live="polite">Analisando seu relato...</div>
-            <div class="mini-progress" aria-hidden="true"><span></span></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="step" data-step="7" aria-labelledby="step7-title">
-        <div class="card" id="resultCard">
-          <div class="result-icon" id="resultIcon">✓</div>
-          <h2 id="step7-title">✅ Boa notícia: seu relato indica ALTO potencial de indenização.</h2>
-          <p class="lead" id="resultText">Seu caso é elegível para análise jurídica gratuita.</p>
-          <div class="footer-identity">
-            <div class="avatar-placeholder">⚖️</div>
-            <div><strong>Equipe Me Ajuda</strong><small>Um especialista pode revisar seu caso e orientar os próximos passos.</small></div>
-          </div>
-          <button class="btn" type="button" onclick="goToStep(8, 'Último passo: seus dados ficam protegidos 🔒')" aria-label="Receber minha análise gratuita">Receber minha análise gratuita →</button>
-        </div>
-      </section>
-
-      <section class="step" data-step="8" aria-labelledby="step8-title">
-        <div class="card">
-          <div class="eyebrow">Captura segura</div>
-          <h2 id="step8-title">Para receber sua análise gratuita, informe seus dados.</h2>
-          <p class="lead">Assim conseguimos identificar seu caso e retornar pelo canal correto.</p>
-          <form class="form" id="leadForm" novalidate>
-            <input type="hidden" name="utm_source" id="utm_source">
-            <input type="hidden" name="utm_medium" id="utm_medium">
-            <input type="hidden" name="utm_campaign" id="utm_campaign">
-            <input type="hidden" name="utm_content" id="utm_content">
-            <input type="hidden" name="utm_term" id="utm_term">
-            <div class="field" id="nameField">
-              <label for="nome">Nome completo</label>
-              <input id="nome" name="nome" type="text" autocomplete="name" inputmode="text" placeholder="Ex: Maria Silva" aria-describedby="nomeError">
-              <div class="error" id="nomeError"></div>
+              <div class="field" id="fieldEmail">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" autocomplete="email" inputmode="email">
+                <div class="hint" id="emailHint"></div>
+              </div>
             </div>
-            <div class="field" id="phoneField">
-              <label for="whatsapp">WhatsApp</label>
-              <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="numeric" placeholder="(71) 99999-9999" aria-describedby="phoneError">
-              <div class="error" id="phoneError"></div>
-            </div>
-            <div class="field" id="emailField">
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@email.com" aria-describedby="emailError">
-              <div class="error" id="emailError"></div>
-            </div>
-            <div class="safe-copy"><span aria-hidden="true">🔒</span><span>Seus dados são sigilosos e usados só para sua análise.</span></div>
-            <button class="btn" id="submitBtn" type="submit" disabled>Finalizar e analisar meu caso</button>
+            <div class="privacy-note">🔒 Seus dados são sigilosos e usados só para sua análise.</div>
+            <button class="cta" id="submitLead" type="submit" disabled>Finalizar e analisar meu caso</button>
           </form>
         </div>
       </section>
 
-      <section class="step" data-step="9" aria-labelledby="step9-title">
-        <div class="card">
-          <div class="eyebrow">Quase pronto</div>
-          <h2 id="step9-title">SEU FORMULÁRIO ESTÁ <span id="finalTitlePercent">98%</span> PREENCHIDO!</h2>
-          <div class="final-meter" aria-live="polite"><div class="final-number" id="finalNumber">0%</div><span>Você está a um passo de ter seu caso analisado.</span></div>
-          <p class="lead">Toque no botão abaixo para enviar seu contexto pelo WhatsApp e acelerar a análise do seu caso.</p>
-          <a class="btn success" id="whatsappBtn" href="#" target="_blank" rel="noopener" aria-label="Analisar meu caso pelo WhatsApp">📲 Analisar meu caso!</a>
-          <p class="whatsapp-note">A mensagem já vai preenchida com o tipo de problema informado no quiz.</p>
+      <section class="screen" data-step="5">
+        <div class="panel final-wrap">
+          <div class="step-label">Último passo</div>
+          <div class="percent-badge"><div class="percent-number" id="finalPercent">0%</div></div>
+          <h2>SEU FORMULÁRIO ESTÁ 98% PREENCHIDO!</h2>
+          <p class="final-copy">Você está a um passo de ter seu caso analisado.</p>
+          <p class="final-copy">Clique no botão abaixo 👇</p>
+          <a class="whatsapp-cta" id="whatsAppBtn" href="#" target="_blank" rel="noopener">Analisar meu caso!</a>
         </div>
       </section>
-    </div>
-  </main>
+    </main>
 
+    <div class="fixed-footer">
+      <div class="footer-chip">
+        <div>
+          <strong>Equipe de análise</strong>
+          <small>Análise gratuita pelo WhatsApp</small>
+        </div>
+        <a class="footer-link" id="footerWhatsApp" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
-    // ===================== CONFIGURAÇÕES =====================
+    // Configurações operacionais
     const WEBHOOK_URL = "";
     const WHATSAPP = "5579999914355";
     const PIXEL_ID = "";
     const GA_ID = "";
-    const PROVA_SOCIAL_BASE = 47;
 
-    // ===================== ESTADO EM MEMÓRIA =====================
-    const leadData = {
-      page: "quiz-aereo",
-      nicho: "direito_do_passageiro_aereo",
-      respostas: {},
-      utms: {},
-      qualificado: null,
-      timestamp_inicio: new Date().toISOString(),
-      user_agent: navigator.userAgent,
-      url: window.location.href
+    const progressTargets = { 0: 0, 1: 20, 2: 45, 3: 70, 4: 90, 5: 100 };
+    const loadingMessages = ["Analisando seu caso...", "Verificando seus direitos...", "Quase lá..."];
+    const toastMessages = {
+      1: "Anotado 💪",
+      2: "Você está indo bem 🎯",
+      4: "Falta muito pouco 🚀",
+      5: "Agora é só concluir no WhatsApp ✅"
     };
 
-    const progressByStep = [5,15,25,35,45,55,68,78,90,100];
-    const reinforcementMessages = [
-      "Ótimo, isso fortalece seu caso 💪",
-      "Anotado! Vamos avançar 🎯",
-      "Você está indo bem ✈️",
-      "Perfeito, informação importante registrada ✅",
-      "Última resposta salva. Agora vamos analisar 🔎"
-    ];
-    let currentStep = 0;
-    let soundOn = true;
-    let milestoneShown = false;
-    let calculatingStarted = false;
-    let resultConfettiDone = false;
-    let finalConfettiDone = false;
+    const state = {
+      currentStep: 0,
+      answers: {
+        caseType: "",
+        whenHappened: ""
+      },
+      lead: {
+        fullName: "",
+        whatsapp: "",
+        email: ""
+      },
+      loadingStarted: false,
+      finalPlayed: false,
+      currentProgress: 0
+    };
 
-    const $ = (selector) => document.querySelector(selector);
-    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+    const screens = [...document.querySelectorAll('.screen')];
+    const progressFill = document.getElementById('progressFill');
+    const progressValue = document.getElementById('progressValue');
+    const toast = document.getElementById('toast');
+    const loadingText = document.getElementById('loadingText');
+    const loadingFill = document.getElementById('loadingFill');
+    const finalPercent = document.getElementById('finalPercent');
+    const leadForm = document.getElementById('leadForm');
+    const startBtn = document.getElementById('startBtn');
+    const nextStep1 = document.getElementById('nextStep1');
+    const nextStep2 = document.getElementById('nextStep2');
+    const submitLead = document.getElementById('submitLead');
+    const fullNameInput = document.getElementById('fullName');
+    const whatsappInput = document.getElementById('whatsapp');
+    const emailInput = document.getElementById('email');
+    const whatsAppBtn = document.getElementById('whatsAppBtn');
+    const footerWhatsApp = document.getElementById('footerWhatsApp');
 
-    // ===================== UTMs + CAMPOS OCULTOS =====================
-    function captureUtms(){
-      const params = new URLSearchParams(window.location.search);
-      ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach((key)=>{
-        const value = params.get(key) || "";
-        leadData.utms[key] = value;
-        const input = document.getElementById(key);
-        if(input) input.value = value;
-      });
-      leadData.identificador = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    }
+    bootstrapTracking();
+    bindSelections();
+    bindForm();
+    bindCTAs();
+    updateProgress(0);
+    updateWhatsAppLinks();
+    staggerVisibleItems(document.querySelector('.screen.active'));
 
-    // ===================== TRACKING CONDICIONAL =====================
-    function initTracking(){
-      if(PIXEL_ID){
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', PIXEL_ID);
-        fbq('track', 'PageView');
-      }
-      if(GA_ID){
+    function bootstrapTracking(){
+      if (GA_ID) {
         const gaScript = document.createElement('script');
         gaScript.async = true;
         gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;
         document.head.appendChild(gaScript);
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){ dataLayer.push(arguments); };
+        window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
         gtag('js', new Date());
         gtag('config', GA_ID);
+      } else {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
+      }
+
+      if (PIXEL_ID) {
+        window.fbq = window.fbq || function(){ (window.fbq.q = window.fbq.q || []).push(arguments); };
+        if (!document.getElementById('fb-pixel-script')) {
+          const fbScript = document.createElement('script');
+          fbScript.id = 'fb-pixel-script';
+          fbScript.async = true;
+          fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+          document.head.appendChild(fbScript);
+        }
+        fbq('init', PIXEL_ID);
+        fbq('track', 'PageView');
+      } else {
+        window.fbq = window.fbq || function(){ return null; };
       }
     }
 
-    function trackLead(){
-      try{ if(PIXEL_ID && window.fbq) fbq('track','Lead'); }catch(e){}
-      try{ if(GA_ID && window.gtag) gtag('event','generate_lead',{event_category:'lead',event_label:'quiz-aereo'}); }catch(e){}
-    }
-
-    // ===================== UI: PROGRESSO, TOAST, SOM, VIBRAÇÃO =====================
-    function setProgress(step){
-      const pct = progressByStep[step] || 0;
-      $('#progressFill').style.width = pct + '%';
-      $('#progressLabel').textContent = pct + '%';
-      if(pct >= 50 && !milestoneShown){
-        milestoneShown = true;
-        showMilestone();
-      }
-    }
-
-    function showToast(message){
-      if(!message) return;
-      const toast = $('#toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(()=>toast.classList.remove('show'), 1500);
-    }
-
-    function showMilestone(){
-      const box = $('#milestone');
-      box.classList.add('show');
-      setTimeout(()=>box.classList.remove('show'), 1450);
-    }
-
-    function haptic(){
-      try{ if(navigator.vibrate) navigator.vibrate(20); }catch(e){}
-    }
-
-    function playSuccessTone(){
-      if(!soundOn) return;
-      try{
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if(!AudioContext) return;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(660, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(920, ctx.currentTime + .075);
-        gain.gain.setValueAtTime(.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(.045, ctx.currentTime + .015);
-        gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .13);
-        osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + .14);
-        setTimeout(()=>ctx.close(), 220);
-      }catch(e){}
-    }
-
-    $('#soundToggle').addEventListener('click',()=>{
-      soundOn = !soundOn;
-      $('#soundToggle').textContent = soundOn ? '🔊' : '🔇';
-      $('#soundToggle').setAttribute('aria-label', soundOn ? 'Som ativado' : 'Som desativado');
-      haptic();
-    });
-
-    // ===================== NAVEGAÇÃO DE TELAS =====================
-    function goToStep(n, toastMessage){
-      if(n === currentStep) return;
-      const oldStep = currentStep;
-      currentStep = n;
-      $$('.step').forEach((step)=>{
-        const stepNumber = Number(step.dataset.step);
-        step.classList.toggle('active', stepNumber === n);
-        step.classList.toggle('prev', stepNumber < n);
+    function bindCTAs(){
+      startBtn.addEventListener('click', () => goToStep(1));
+      nextStep1.addEventListener('click', () => {
+        if (state.answers.caseType) goToStep(2);
       });
-      setProgress(n);
-      playSuccessTone();
-      if(n > oldStep) showToast(toastMessage || reinforcementMessages[Math.max(0, Math.min(oldStep-1, reinforcementMessages.length-1))]);
-      if(n === 6) startCalculating();
-      if(n === 7) renderResult();
-      if(n === 9) renderFinal();
+      nextStep2.addEventListener('click', () => {
+        if (state.answers.whenHappened) goToStep(3);
+      });
     }
 
-    function startQuiz(){
-      leadData.evento_inicio_quiz = new Date().toISOString();
-      haptic();
-      goToStep(1, 'Vamos começar sua análise gratuita ✈️');
+    function bindSelections(){
+      document.querySelectorAll('[data-question]').forEach(group => {
+        const questionKey = group.dataset.question;
+        group.querySelectorAll('.option-card').forEach((button, index) => {
+          button.style.animationDelay = `${index * 80}ms`;
+          button.addEventListener('click', event => handleOptionSelect(event, questionKey, button));
+        });
+      });
     }
 
-    // ===================== RESPOSTAS + QUALIFICAÇÃO =====================
-    function handleOptionClick(button){
-      const key = button.dataset.key;
-      const value = button.dataset.value;
-      leadData.respostas[key] = value;
-      if(key === 'problema_voo') leadData.tipo_caso = value;
-
-      button.parentElement.querySelectorAll('.option').forEach(opt=>opt.classList.remove('selected'));
+    function handleOptionSelect(event, questionKey, button){
+      const group = button.closest('[data-question]');
+      group.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
       button.classList.add('selected');
-      haptic();
-
-      if(key === 'quando_aconteceu') avaliarQualificacao();
-
-      setTimeout(()=>{
-        const next = currentStep + 1;
-        goToStep(next, reinforcementMessages[Math.min(currentStep-1, reinforcementMessages.length-1)]);
-      }, 350);
+      state.answers[questionKey] = button.dataset.value;
+      createRipple(button, event);
+      vibrate(20);
+      fireSmallConfetti(button);
+      trackEvent('quiz_answer', { question: questionKey, answer: button.dataset.value });
+      if (questionKey === 'caseType') nextStep1.disabled = false;
+      if (questionKey === 'whenHappened') nextStep2.disabled = false;
+      updateWhatsAppLinks();
     }
 
-    // Regra silenciosa de qualificação/prescrição:
-    // Internacional + entre 2 e 5 anos ou mais de 5 anos = provavelmente prescrito.
-    // Nacional + mais de 5 anos = provavelmente prescrito.
-    // Demais combinações = elegível para análise inicial mais forte.
-    function avaliarQualificacao(){
-      const tipoVoo = leadData.respostas.tipo_voo || '';
-      const quando = leadData.respostas.quando_aconteceu || '';
-      const internacional = tipoVoo === 'Internacional';
-      const nacional = tipoVoo === 'Nacional (dentro do Brasil)';
-      const provavelmentePrescrito =
-        (internacional && (quando === 'Entre 2 e 5 anos' || quando === 'Há mais de 5 anos')) ||
-        (nacional && quando === 'Há mais de 5 anos');
-      leadData.qualificado = !provavelmentePrescrito;
-      leadData.motivo_qualificacao = provavelmentePrescrito ? 'prazo_indica_avaliacao_de_viabilidade' : 'prazo_indica_elegivel_para_analise';
+    function bindForm(){
+      whatsappInput.addEventListener('input', () => {
+        whatsappInput.value = maskPhone(whatsappInput.value);
+        validateForm();
+      });
+      fullNameInput.addEventListener('input', validateForm);
+      emailInput.addEventListener('input', validateForm);
+
+      leadForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (!validateForm()) return;
+        state.lead.fullName = fullNameInput.value.trim();
+        state.lead.whatsapp = digitsOnly(whatsappInput.value);
+        state.lead.email = emailInput.value.trim();
+        updateWhatsAppLinks();
+
+        const payload = buildPayload();
+        trackLeadEvents(payload);
+        sendWebhook(payload);
+        goToStep(5);
+      });
     }
 
-    $$('.option').forEach(button=>button.addEventListener('click',()=>handleOptionClick(button)));
+    function validateForm(){
+      const fullName = fullNameInput.value.trim();
+      const phoneDigits = digitsOnly(whatsappInput.value);
+      const email = emailInput.value.trim();
 
-    // ===================== CALCULANDO =====================
-    function startCalculating(){
-      if(calculatingStarted) return;
-      calculatingStarted = true;
-      const messages = [
-        'Analisando seu relato...',
-        'Verificando enquadramento jurídico...',
-        'Cruzando com casos similares...',
-        'Pronto!'
-      ];
-      let idx = 0;
-      $('#loadingMsg').textContent = messages[0];
-      const interval = setInterval(()=>{
-        idx += 1;
-        $('#loadingMsg').textContent = messages[idx] || messages[messages.length-1];
-        if(idx >= messages.length-1){
-          clearInterval(interval);
-          setTimeout(()=>goToStep(7, 'Resultado liberado ✅'), 520);
-        }
-      }, 700);
+      const nameValid = /^\S+\s+\S+/.test(fullName);
+      const phoneValid = phoneDigits.length === 11;
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email);
+
+      toggleFieldState('fieldName', 'nameHint', nameValid || fullName.length === 0 ? '' : 'Digite nome e sobrenome.');
+      toggleFieldState('fieldPhone', 'phoneHint', phoneValid || phoneDigits.length === 0 ? '' : 'Digite um WhatsApp com 11 dígitos.');
+      toggleFieldState('fieldEmail', 'emailHint', emailValid || email.length === 0 ? '' : 'Digite um e-mail válido.');
+
+      submitLead.disabled = !(nameValid && phoneValid && emailValid);
+      return nameValid && phoneValid && emailValid;
     }
 
-    // ===================== RESULTADO =====================
-    function renderResult(){
-      if(leadData.qualificado === null) avaliarQualificacao();
-      const icon = $('#resultIcon');
-      const title = $('#step7-title');
-      const text = $('#resultText');
-      if(leadData.qualificado){
-        icon.textContent = '✓';
-        icon.classList.remove('neutral');
-        title.textContent = '✅ Boa notícia: seu relato indica ALTO potencial de indenização.';
-        text.textContent = 'Seu caso é elegível para análise jurídica gratuita.';
-        if(!resultConfettiDone){ resultConfettiDone = true; launchConfetti(1500, 90); }
-      }else{
-        icon.textContent = 'i';
-        icon.classList.add('neutral');
-        title.textContent = 'Recebemos seu relato. Um especialista vai avaliar a viabilidade do seu caso.';
-        text.textContent = 'Alguns prazos podem exigir uma análise mais cuidadosa, por isso seguimos para revisar os detalhes com você.';
-      }
+    function toggleFieldState(fieldId, hintId, message){
+      const field = document.getElementById(fieldId);
+      const hint = document.getElementById(hintId);
+      field.classList.toggle('error', Boolean(message));
+      hint.textContent = message;
     }
 
-    // ===================== FORMULÁRIO =====================
-    const form = $('#leadForm');
-    const nameInput = $('#nome');
-    const phoneInput = $('#whatsapp');
-    const emailInput = $('#email');
-    const submitBtn = $('#submitBtn');
+    function goToStep(targetStep){
+      if (targetStep === state.currentStep) return;
+      const current = screens.find(screen => Number(screen.dataset.step) === state.currentStep);
+      const next = screens.find(screen => Number(screen.dataset.step) === targetStep);
+      if (!next) return;
 
-    function onlyDigits(value){ return (value || '').replace(/\D/g,''); }
-    function maskPhone(value){
-      const d = onlyDigits(value).slice(0,11);
-      if(d.length <= 2) return d ? '(' + d : '';
-      if(d.length <= 7) return `(${d.slice(0,2)}) ${d.slice(2)}`;
-      return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
-    }
-    function isValidName(value){ return value.trim().split(/\s+/).filter(Boolean).length >= 2; }
-    function isValidPhone(value){ return onlyDigits(value).length === 11; }
-    function isValidEmail(value){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value.trim()); }
+      current.classList.remove('active');
+      current.classList.add('exiting');
+      next.classList.add('active');
+      next.classList.remove('exiting');
+      staggerVisibleItems(next);
 
-    function setFieldState(wrapper, errorEl, valid, message, touched){
-      wrapper.classList.toggle('invalid', Boolean(touched && !valid));
-      errorEl.textContent = touched && !valid ? message : '';
-    }
+      updateProgress(targetStep);
+      state.currentStep = targetStep;
+      trackEvent('quiz_step_view', { step: targetStep });
 
-    function validateForm(showErrors=false){
-      const nameOk = isValidName(nameInput.value);
-      const phoneOk = isValidPhone(phoneInput.value);
-      const emailOk = isValidEmail(emailInput.value);
-      setFieldState($('#nameField'), $('#nomeError'), nameOk, 'Informe nome e sobrenome.', showErrors || nameInput.value.length > 0);
-      setFieldState($('#phoneField'), $('#phoneError'), phoneOk, 'Informe um WhatsApp com DDD e 11 dígitos.', showErrors || phoneInput.value.length > 0);
-      setFieldState($('#emailField'), $('#emailError'), emailOk, 'Informe um e-mail válido.', showErrors || emailInput.value.length > 0);
-      submitBtn.disabled = !(nameOk && phoneOk && emailOk);
-      return nameOk && phoneOk && emailOk;
+      if (toastMessages[targetStep]) showToast(toastMessages[targetStep]);
+
+      setTimeout(() => current.classList.remove('exiting'), 320);
+
+      if (targetStep === 3) startLoadingSequence();
+      if (targetStep === 5) enterFinalStep();
     }
 
-    phoneInput.addEventListener('input',()=>{ phoneInput.value = maskPhone(phoneInput.value); validateForm(); });
-    [nameInput,emailInput].forEach(input=>input.addEventListener('input',()=>validateForm()));
-    [nameInput,phoneInput,emailInput].forEach(input=>input.addEventListener('blur',()=>validateForm(true)));
-
-    form.addEventListener('submit', async (event)=>{
-      event.preventDefault();
-      if(!validateForm(true)) return;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
-
-      leadData.nome = nameInput.value.trim();
-      leadData.whatsapp = onlyDigits(phoneInput.value);
-      leadData.email = emailInput.value.trim().toLowerCase();
-      leadData.timestamp_submit = new Date().toISOString();
-
-      const payload = {
-        ...leadData,
-        utm_source: leadData.utms.utm_source || '',
-        utm_medium: leadData.utms.utm_medium || '',
-        utm_campaign: leadData.utms.utm_campaign || '',
-        utm_content: leadData.utms.utm_content || '',
-        utm_term: leadData.utms.utm_term || ''
-      };
-
-      trackLead();
-      if(WEBHOOK_URL){
-        try{
-          await fetch(WEBHOOK_URL, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify(payload),
-            keepalive:true
-          });
-        }catch(e){
-          leadData.webhook_error = true;
-        }
-      }
-      buildWhatsAppLink();
-      goToStep(9, 'Dados recebidos com segurança 🔒');
-    });
-
-    // ===================== WHATSAPP FINAL =====================
-    function buildWhatsAppLink(){
-      const tipo = leadData.tipo_caso || leadData.respostas.problema_voo || 'problema com companhia aérea';
-      const prazo = leadData.respostas.quando_aconteceu || 'não informado';
-      const nome = leadData.nome || '';
-      const msg = [
-        `Olá, sou ${nome}.`,
-        `Acabei de preencher o quiz do Me Ajuda sobre direito do passageiro aéreo.`,
-        `Meu caso envolve: ${tipo}.`,
-        `Aconteceu: ${prazo}.`,
-        `Gostaria de receber a análise gratuita do meu caso.`
-      ].join('\n');
-      const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-      $('#whatsappBtn').href = url;
+    function updateProgress(step){
+      const target = progressTargets[step] ?? 0;
+      progressFill.style.width = `${target}%`;
+      animateCounter(progressValue, state.currentProgress, target, value => `${Math.round(value)}%`);
+      state.currentProgress = target;
     }
 
-    function renderFinal(){
-      buildWhatsAppLink();
-      animateFinalNumber();
-      if(!finalConfettiDone){ finalConfettiDone = true; setTimeout(()=>launchConfetti(1900, 130), 180); }
-    }
-
-    function animateFinalNumber(){
-      const target = 98;
-      const el = $('#finalNumber');
-      const title = $('#finalTitlePercent');
-      let current = 0;
+    function animateCounter(element, from, to, formatter){
       const start = performance.now();
+      const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 600;
       function frame(now){
-        const progress = Math.min(1, (now - start) / 1050);
-        current = Math.round(target * (1 - Math.pow(1-progress, 3)));
-        el.textContent = current + '%';
-        title.textContent = current + '%';
-        if(progress < 1) requestAnimationFrame(frame);
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = from + ((to - from) * eased);
+        element.textContent = formatter(value);
+        if (progress < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
     }
 
-    // ===================== CONFETE EM CANVAS, SEM BIBLIOTECA EXTERNA =====================
-    function launchConfetti(duration=1600, amount=90){
-      const canvas = $('#confettiCanvas');
-      const ctx = canvas.getContext('2d');
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-      const colors = ['#10B981','#2563EB','#F59E0B','#EC4899','#8B5CF6','#22C55E'];
-      const pieces = Array.from({length:amount},()=>({
-        x: Math.random()*window.innerWidth,
-        y: -20 - Math.random()*window.innerHeight*.25,
-        size: 6 + Math.random()*9,
-        speed: 2.4 + Math.random()*4,
-        drift: -1.6 + Math.random()*3.2,
-        rot: Math.random()*Math.PI,
-        spin: -.16 + Math.random()*.32,
-        color: colors[Math.floor(Math.random()*colors.length)],
-        alpha: .82 + Math.random()*.18
-      }));
-      const start = performance.now();
-      function draw(now){
-        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-        pieces.forEach(p=>{
-          p.x += p.drift;
-          p.y += p.speed;
-          p.rot += p.spin;
-          ctx.save();
-          ctx.globalAlpha = p.alpha;
-          ctx.translate(p.x,p.y);
-          ctx.rotate(p.rot);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.58);
-          ctx.restore();
-        });
-        if(now - start < duration){
-          requestAnimationFrame(draw);
-        }else{
-          ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    function staggerVisibleItems(scope){
+      if (!scope) return;
+      scope.querySelectorAll('.bullet-item, .option-card').forEach((item, index) => {
+        item.style.animation = 'none';
+        item.offsetHeight;
+        item.style.animation = `fadeUp .45s var(--ease-soft) forwards`;
+        item.style.animationDelay = `${index * 80}ms`;
+      });
+    }
+
+    function showToast(message){
+      toast.textContent = message;
+      toast.classList.remove('show');
+      void toast.offsetWidth;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1500);
+    }
+
+    function startLoadingSequence(){
+      if (state.loadingStarted) return;
+      state.loadingStarted = true;
+      let msgIndex = 0;
+      loadingFill.style.width = '0%';
+      loadingText.textContent = loadingMessages[0];
+
+      const progressTimer = setInterval(() => {
+        const current = parseFloat(loadingFill.style.width) || 0;
+        if (current >= 100) {
+          clearInterval(progressTimer);
+          return;
         }
+        loadingFill.style.width = `${Math.min(current + 4, 100)}%`;
+      }, 100);
+
+      const messageTimer = setInterval(() => {
+        msgIndex = (msgIndex + 1) % loadingMessages.length;
+        loadingText.classList.add('fade');
+        setTimeout(() => {
+          loadingText.textContent = loadingMessages[msgIndex];
+          loadingText.classList.remove('fade');
+        }, 180);
+      }, 800);
+
+      setTimeout(() => {
+        clearInterval(progressTimer);
+        clearInterval(messageTimer);
+        loadingFill.style.width = '100%';
+        goToStep(4);
+      }, 2500);
+    }
+
+    function enterFinalStep(){
+      if (!state.finalPlayed) {
+        fireBigConfetti();
+        animateCounter(finalPercent, 0, 98, value => `${Math.round(value)}%`);
+        state.finalPlayed = true;
+      } else {
+        finalPercent.textContent = '98%';
       }
-      requestAnimationFrame(draw);
+      updateWhatsAppLinks();
     }
 
-    // ===================== PROVA SOCIAL =====================
-    function animateSocialProof(){
-      const el = $('#socialCounter');
-      const final = PROVA_SOCIAL_BASE;
-      let value = Math.max(1, final - 7);
-      el.textContent = value;
-      const timer = setInterval(()=>{
-        value += 1;
-        el.textContent = value;
-        if(value >= final) clearInterval(timer);
-      }, 120);
+    function buildPayload(){
+      return {
+        answers: {
+          caseType: state.answers.caseType,
+          whenHappened: state.answers.whenHappened
+        },
+        lead: {
+          fullName: state.lead.fullName,
+          whatsapp: state.lead.whatsapp,
+          email: state.lead.email
+        },
+        utm: captureUTMs(),
+        page: {
+          url: window.location.href,
+          path: window.location.pathname,
+          title: document.title,
+          referrer: document.referrer || ''
+        },
+        timestamp: new Date().toISOString()
+      };
     }
 
-    window.addEventListener('resize',()=>{
-      const canvas = $('#confettiCanvas');
-      canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
-      canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
-    });
+    function captureUTMs(){
+      const params = new URLSearchParams(window.location.search);
+      return {
+        utm_source: params.get('utm_source') || '',
+        utm_medium: params.get('utm_medium') || '',
+        utm_campaign: params.get('utm_campaign') || '',
+        utm_term: params.get('utm_term') || '',
+        utm_content: params.get('utm_content') || '',
+        fbclid: params.get('fbclid') || '',
+        gclid: params.get('gclid') || ''
+      };
+    }
 
-    captureUtms();
-    initTracking();
-    animateSocialProof();
-    setProgress(0);
+    async function sendWebhook(payload){
+      if (!WEBHOOK_URL) return;
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          keepalive: true
+        });
+      } catch (error) {
+        console.warn('Webhook falhou, fluxo seguirá normalmente.', error);
+      }
+    }
+
+    function trackLeadEvents(payload){
+      try { fbq('track', 'Lead'); } catch (error) { console.warn(error); }
+      try { gtag('event', 'generate_lead', payload); } catch (error) { console.warn(error); }
+    }
+
+    function trackEvent(name, params = {}){
+      try { gtag('event', name, params); } catch (error) {}
+    }
+
+    function updateWhatsAppLinks(){
+      const text = buildWhatsAppMessage();
+      const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+      whatsAppBtn.href = url;
+      footerWhatsApp.href = url;
+    }
+
+    function buildWhatsAppMessage(){
+      const parts = [
+        'Olá! Quero analisar meu caso.',
+        `Tipo de caso: ${state.answers.caseType || 'Não informado'}`,
+        `Quando aconteceu: ${state.answers.whenHappened || 'Não informado'}`
+      ];
+
+      if (state.lead.fullName) parts.push(`Nome: ${state.lead.fullName}`);
+      if (state.lead.whatsapp) parts.push(`WhatsApp: ${formatWhatsappForMessage(state.lead.whatsapp)}`);
+      if (state.lead.email) parts.push(`E-mail: ${state.lead.email}`);
+
+      return parts.join('\n');
+    }
+
+    function formatWhatsappForMessage(value){
+      const digits = digitsOnly(value);
+      if (digits.length !== 11) return value;
+      return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`;
+    }
+
+    function digitsOnly(value){
+      return (value || '').replace(/\D/g, '');
+    }
+
+    function maskPhone(value){
+      const digits = digitsOnly(value).slice(0, 11);
+      if (digits.length <= 2) return digits.length ? `(${digits}` : '';
+      if (digits.length <= 7) return `(${digits.slice(0,2)}) ${digits.slice(2)}`;
+      return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`;
+    }
+
+    function createRipple(button, event){
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 1.2;
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      const clientX = event.clientX || rect.left + rect.width / 2;
+      const clientY = event.clientY || rect.top + rect.height / 2;
+      ripple.style.left = `${clientX - rect.left}px`;
+      ripple.style.top = `${clientY - rect.top}px`;
+      button.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once:true });
+    }
+
+    function fireSmallConfetti(button){
+      if (typeof confetti !== 'function') return;
+      const rect = button.getBoundingClientRect();
+      confetti({
+        particleCount: 40,
+        spread: 60,
+        startVelocity: 28,
+        origin: {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight
+        },
+        colors: ['#2563EB', '#10B981', '#F59E0B', '#93C5FD']
+      });
+    }
+
+    function fireBigConfetti(){
+      if (typeof confetti !== 'function') return;
+      const base = { particleCount: 60, spread: 70, startVelocity: 42, colors: ['#2563EB', '#10B981', '#F59E0B', '#FFFFFF'] };
+      confetti({ ...base, origin:{ x:.1, y:.68 } });
+      confetti({ ...base, origin:{ x:.9, y:.68 } });
+      confetti({ particleCount:60, spread:90, startVelocity:48, origin:{ x:.5, y:.45 }, colors:['#2563EB', '#10B981', '#F59E0B', '#34D399'] });
+    }
+
+    function vibrate(ms){
+      try {
+        if (navigator.vibrate) navigator.vibrate(ms);
+      } catch (error) {}
+    }
   </script>
 </body>
 </html>

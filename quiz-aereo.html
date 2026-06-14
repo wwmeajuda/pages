@@ -76,19 +76,19 @@
     }
     .progress-track{
       flex:1;
-      height:10px;
+      height:12px;
       border-radius:999px;
-      background:rgba(148,163,184,.20);
+      background:linear-gradient(180deg, rgba(226,232,240,.96), rgba(203,213,225,.82));
       overflow:hidden;
-      box-shadow:inset 0 0 0 1px rgba(148,163,184,.18);
+      box-shadow:inset 0 1px 2px rgba(255,255,255,.8), inset 0 0 0 1px rgba(148,163,184,.22);
     }
     .progress-fill{
       height:100%;
       width:0%;
       border-radius:inherit;
-      background:linear-gradient(90deg,var(--success),var(--gold));
+      background:linear-gradient(90deg, #1D4ED8 0%, #2563EB 52%, #60A5FA 100%);
       transition:width .6s cubic-bezier(.25,.8,.25,1);
-      box-shadow:0 0 16px rgba(16,185,129,.55);
+      box-shadow:0 0 0 1px rgba(37,99,235,.14), 0 6px 18px rgba(37,99,235,.30);
     }
     .progress-value{
       min-width:44px;
@@ -258,8 +258,9 @@
       color:#10203A;
       box-shadow:0 12px 24px rgba(15,23,42,.06);
       overflow:hidden;
-      transition:transform .15s var(--ease), box-shadow .15s var(--ease), border-color .18s var(--ease), background .18s var(--ease);
+      transition:transform .15s var(--ease), box-shadow .15s var(--ease), border-color .18s var(--ease), background .18s var(--ease), filter .18s var(--ease);
       -webkit-tap-highlight-color:transparent;
+      transform-origin:center;
     }
     .option-card:hover,
     .option-card:active{
@@ -291,6 +292,9 @@
       border-color:var(--primary);
       background:#EFF6FF;
       box-shadow:0 18px 32px rgba(37,99,235,.18);
+    }
+    .option-card.selection-hit{
+      animation:selectionPulse .42s cubic-bezier(.22,1,.36,1);
     }
     .option-card.selected::before{opacity:1}
     .option-card.selected::after{
@@ -566,6 +570,11 @@
       0%{opacity:.5;transform:translate(-50%,-50%) scale(0)}
       100%{opacity:0;transform:translate(-50%,-50%) scale(1)}
     }
+    @keyframes selectionPulse{
+      0%{transform:scale(.96);filter:brightness(.98)}
+      55%{transform:scale(1.018);filter:brightness(1.03)}
+      100%{transform:scale(1);filter:brightness(1)}
+    }
     @keyframes pulse{
       0%,100%{transform:scale(1)}
       50%{transform:scale(1.03)}
@@ -707,22 +716,13 @@
       </section>
     </main>
 
-    <div class="fixed-footer">
-      <div class="footer-chip">
-        <div>
-          <strong>Equipe de análise</strong>
-          <small>Análise gratuita pelo WhatsApp</small>
-        </div>
-        <a class="footer-link" id="footerWhatsApp" href="#" target="_blank" rel="noopener">WhatsApp</a>
-      </div>
-    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
     // Configurações operacionais
     const WEBHOOK_URL = "";
-    const WHATSAPP = "5579999914355";
+    const WHATSAPP = "5538991649500";
     const PIXEL_ID = "";
     const GA_ID = "";
 
@@ -767,7 +767,7 @@
     const whatsappInput = document.getElementById('whatsapp');
     const emailInput = document.getElementById('email');
     const whatsAppBtn = document.getElementById('whatsAppBtn');
-    const footerWhatsApp = document.getElementById('footerWhatsApp');
+
 
     bootstrapTracking();
     bindSelections();
@@ -830,8 +830,11 @@
 
     function handleOptionSelect(event, questionKey, button){
       const group = button.closest('[data-question]');
-      group.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
-      button.classList.add('selected');
+      group.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('selected', 'selection-hit');
+      });
+      void button.offsetWidth;
+      button.classList.add('selected', 'selection-hit');
       state.answers[questionKey] = button.dataset.value;
       createRipple(button, event);
       vibrate(20);
@@ -1057,7 +1060,6 @@
       const text = buildWhatsAppMessage();
       const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
       whatsAppBtn.href = url;
-      footerWhatsApp.href = url;
     }
 
     function buildWhatsAppMessage(){

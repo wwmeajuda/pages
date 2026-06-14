@@ -1,0 +1,4 @@
+project_id = "local-placeholder"
+
+[functions.quiz-aereo-lead-relay]
+verify_jwt = false

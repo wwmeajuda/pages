@@ -738,6 +738,37 @@
 
       <section class="screen" data-step="1">
         <div class="panel">
+          <div class="step-label">Etapa 1</div>
+          <h2>Qual é o seu nome?</h2>
+          <div class="form-grid">
+            <div class="field" id="fieldName">
+              <label for="fullName">Nome completo</label>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" inputmode="text">
+              <div class="hint" id="nameHint"></div>
+            </div>
+          </div>
+          <button class="cta" id="nextName" type="button" disabled>Avançar</button>
+        </div>
+      </section>
+
+      <section class="screen" data-step="2">
+        <div class="panel">
+          <div class="step-label">Etapa 2</div>
+          <h2>Qual seu WhatsApp?</h2>
+          <div class="form-grid">
+            <div class="field" id="fieldPhone">
+              <label for="whatsapp">WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="numeric" maxlength="15">
+              <div class="hint" id="phoneHint"></div>
+            </div>
+          </div>
+          <div class="privacy-note">🔒 Seus dados são sigilosos e usados só para sua análise.</div>
+          <button class="cta" id="nextWhatsapp" type="button" disabled>Avançar</button>
+        </div>
+      </section>
+
+      <section class="screen" data-step="3">
+        <div class="panel">
           <div class="step-label">Pergunta 1</div>
           <h2>Qual das opções abaixo mais representa o seu caso?</h2>
           <div class="options" data-question="caseType">
@@ -750,7 +781,7 @@
         </div>
       </section>
 
-      <section class="screen" data-step="2">
+      <section class="screen" data-step="4">
         <div class="panel">
           <div class="step-label">Pergunta 2</div>
           <h2>Quando aconteceu esse transtorno?</h2>
@@ -763,7 +794,7 @@
         </div>
       </section>
 
-      <section class="screen" data-step="3">
+      <section class="screen" data-step="5">
         <div class="panel">
           <div class="loader-wrap">
             <div class="spinner" aria-hidden="true"></div>
@@ -773,40 +804,7 @@
         </div>
       </section>
 
-      <section class="screen" data-step="4">
-        <div class="panel">
-          <div class="step-label">Quase pronto</div>
-          <h2>Para onde enviamos a análise do seu caso?</h2>
-          <form id="leadForm" novalidate>
-            <div class="form-grid">
-              <div class="field" id="fieldName">
-                <label for="fullName">Nome completo</label>
-                <input id="fullName" name="fullName" type="text" autocomplete="name" inputmode="text">
-                <div class="hint" id="nameHint"></div>
-              </div>
-
-              <div class="field" id="fieldPhone">
-                <label for="whatsapp">WhatsApp</label>
-                <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="numeric" maxlength="15">
-                <div class="hint" id="phoneHint"></div>
-              </div>
-
-              <div class="field" id="fieldEmail">
-                <label for="email">E-mail</label>
-                <div class="field-with-suggestions">
-                  <input id="email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false">
-                  <div class="email-suggestions" id="emailSuggestions" hidden></div>
-                </div>
-                <div class="hint" id="emailHint"></div>
-              </div>
-            </div>
-            <div class="privacy-note">🔒 Seus dados são sigilosos e usados só para sua análise.</div>
-            <button class="cta" id="submitLead" type="submit" disabled>Finalizar e analisar meu caso</button>
-          </form>
-        </div>
-      </section>
-
-      <section class="screen" data-step="5">
+      <section class="screen" data-step="6">
         <div class="panel final-wrap">
           <div class="step-label">Último passo</div>
           <div class="percent-badge"><div class="percent-number" id="finalPercent">0%</div></div>
@@ -817,7 +815,7 @@
         </div>
       </section>
 
-      <section class="screen" data-step="6">
+      <section class="screen" data-step="7">
         <div class="panel final-wrap">
           <div class="step-label">Agradecemos o contato</div>
           <div class="percent-badge percent-badge--muted"><div class="percent-number percent-number--muted">!</div></div>
@@ -836,15 +834,15 @@
     const PIXEL_IDS = ["610478651574908", "494217796519898"];
     const GA_ID = "G-JJ6D28ZZZE";
 
-    const progressTargets = { 0: 0, 1: 20, 2: 45, 3: 70, 4: 90, 5: 100, 6: 100 };
+    const progressTargets = { 0: 0, 1: 15, 2: 30, 3: 50, 4: 70, 5: 90, 6: 100, 7: 100 };
     const loadingMessages = ["Analisando seu caso...", "Verificando seus direitos...", "Quase lá..."];
-    const emailProviders = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com.br', 'icloud.com', 'uol.com.br'];
     const toastMessages = {
-      1: "Anotado 💪",
-      2: "Você está indo bem 🎯",
-      4: "Falta muito pouco 🚀",
-      5: "Agora é só concluir no WhatsApp ✅",
-      6: "Obrigado pelo contato 🙏"
+      1: "Vamos começar ✍️",
+      2: "Perfeito, falta pouco 📲",
+      3: "Anotado 💪",
+      4: "Você está indo bem 🎯",
+      6: "Agora é só concluir no WhatsApp ✅",
+      7: "Obrigado pelo contato 🙏"
     };
 
     const state = {
@@ -855,8 +853,7 @@
       },
       lead: {
         fullName: "",
-        whatsapp: "",
-        email: ""
+        whatsapp: ""
       },
       loadingStarted: false,
       finalPlayed: false,
@@ -879,22 +876,20 @@
     const loadingText = document.getElementById('loadingText');
     const loadingFill = document.getElementById('loadingFill');
     const finalPercent = document.getElementById('finalPercent');
-    const leadForm = document.getElementById('leadForm');
-    const emailSuggestions = document.getElementById('emailSuggestions');
     const startBtn = document.getElementById('startBtn');
+    const nextName = document.getElementById('nextName');
+    const nextWhatsapp = document.getElementById('nextWhatsapp');
     const nextStep1 = document.getElementById('nextStep1');
     const nextStep2 = document.getElementById('nextStep2');
-    const submitLead = document.getElementById('submitLead');
     const fullNameInput = document.getElementById('fullName');
     const whatsappInput = document.getElementById('whatsapp');
-    const emailInput = document.getElementById('email');
     const whatsAppBtn = document.getElementById('whatsAppBtn');
 
 
     scheduleNonCriticalBoot();
     bindProtection();
     bindSelections();
-    bindForm();
+    bindLeadCapture();
     bindCTAs();
     updateProgress(0);
     updateWhatsAppLinks();
@@ -976,17 +971,32 @@
         trackViewContent();
         goToStep(1);
       });
+      nextName.addEventListener('click', () => {
+        if (!validateLeadName()) return;
+        state.lead.fullName = fullNameInput.value.trim();
+        updateWhatsAppLinks();
+        goToStep(2);
+      });
+      nextWhatsapp.addEventListener('click', () => {
+        if (!validateLeadWhatsapp()) return;
+        state.lead.whatsapp = digitsOnly(whatsappInput.value);
+        updateWhatsAppLinks();
+        goToStep(3);
+      });
       nextStep1.addEventListener('click', () => {
-        if (state.answers.caseType) goToStep(2);
+        if (state.answers.caseType) goToStep(4);
       });
       nextStep2.addEventListener('click', () => {
         if (!state.answers.whenHappened) return;
         if (state.answers.whenHappened === 'Faz mais de 5 anos') {
           trackEvent('quiz_ineligible', { reason: 'older_than_5_years' });
-          goToStep(6);
+          goToStep(7);
           return;
         }
-        goToStep(3);
+        const payload = buildPayload();
+        trackLeadEvents(payload);
+        sendWebhook(payload);
+        goToStep(5);
       });
       whatsAppBtn.addEventListener('click', () => {
         trackContactEvent();
@@ -1021,111 +1031,36 @@
       updateWhatsAppLinks();
     }
 
-    function bindForm(){
+    function bindLeadCapture(){
+      fullNameInput.addEventListener('input', () => {
+        state.lead.fullName = fullNameInput.value.trim();
+        validateLeadName();
+        updateWhatsAppLinks();
+      });
       whatsappInput.addEventListener('input', () => {
         whatsappInput.value = maskPhone(whatsappInput.value);
-        validateForm();
-      });
-      fullNameInput.addEventListener('input', validateForm);
-      emailInput.addEventListener('input', () => {
-        validateForm();
-        renderEmailSuggestions();
-      });
-      emailInput.addEventListener('focus', renderEmailSuggestions);
-      emailInput.addEventListener('blur', () => {
-        window.setTimeout(hideEmailSuggestions, 140);
-      });
-
-      leadForm.addEventListener('submit', async event => {
-        event.preventDefault();
-        if (!validateForm()) return;
-        state.lead.fullName = fullNameInput.value.trim();
         state.lead.whatsapp = digitsOnly(whatsappInput.value);
-        state.lead.email = emailInput.value.trim();
+        validateLeadWhatsapp();
         updateWhatsAppLinks();
-
-        const payload = buildPayload();
-        trackLeadEvents(payload);
-        sendWebhook(payload);
-        goToStep(5);
       });
+      validateLeadName();
+      validateLeadWhatsapp();
     }
 
-    function validateForm(){
+    function validateLeadName(){
       const fullName = fullNameInput.value.trim();
-      const phoneDigits = digitsOnly(whatsappInput.value);
-      const email = emailInput.value.trim();
-
       const nameValid = /^\S+\s+\S+/.test(fullName);
-      const phoneValid = phoneDigits.length === 11;
-      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email);
-
       toggleFieldState('fieldName', 'nameHint', nameValid || fullName.length === 0 ? '' : 'Digite nome e sobrenome.');
+      nextName.disabled = !nameValid;
+      return nameValid;
+    }
+
+    function validateLeadWhatsapp(){
+      const phoneDigits = digitsOnly(whatsappInput.value);
+      const phoneValid = phoneDigits.length === 11;
       toggleFieldState('fieldPhone', 'phoneHint', phoneValid || phoneDigits.length === 0 ? '' : 'Digite um WhatsApp com 11 dígitos.');
-      toggleFieldState('fieldEmail', 'emailHint', emailValid || email.length === 0 ? '' : 'Digite um e-mail válido.');
-
-      submitLead.disabled = !(nameValid && phoneValid && emailValid);
-      return nameValid && phoneValid && emailValid;
-    }
-
-    function renderEmailSuggestions(){
-      const suggestions = getEmailSuggestions(emailInput.value);
-      if (!suggestions.length) {
-        hideEmailSuggestions();
-        return;
-      }
-
-      emailSuggestions.innerHTML = suggestions.map(suggestion => {
-        const [localPart, domainPart] = suggestion.split('@');
-        return `<button class="email-suggestion" type="button" data-email="${escapeHtml(suggestion)}"><span>${escapeHtml(localPart)}@<strong>${escapeHtml(domainPart)}</strong></span></button>`;
-      }).join('');
-
-      emailSuggestions.hidden = false;
-      emailSuggestions.querySelectorAll('.email-suggestion').forEach(button => {
-        button.addEventListener('mousedown', event => {
-          event.preventDefault();
-          applyEmailSuggestion(button.dataset.email);
-        });
-      });
-    }
-
-    function getEmailSuggestions(rawValue){
-      const value = rawValue.trim().toLowerCase();
-      if (!value || /\s/.test(value)) return [];
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value)) return [];
-
-      const hasAt = value.includes('@');
-      const [localPart, domainPart = ''] = value.split('@');
-      if (!localPart || localPart.length < 2) return [];
-
-      const suggestions = emailProviders
-        .filter(provider => !hasAt || provider.startsWith(domainPart))
-        .map(provider => `${localPart}@${provider}`)
-        .filter((suggestion, index, array) => suggestion !== value && array.indexOf(suggestion) === index)
-        .slice(0, 5);
-
-      return suggestions;
-    }
-
-    function applyEmailSuggestion(email){
-      emailInput.value = email;
-      hideEmailSuggestions();
-      validateForm();
-      emailInput.focus();
-    }
-
-    function hideEmailSuggestions(){
-      emailSuggestions.hidden = true;
-      emailSuggestions.innerHTML = '';
-    }
-
-    function escapeHtml(value){
-      return String(value)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
+      nextWhatsapp.disabled = !phoneValid;
+      return phoneValid;
     }
 
     function toggleFieldState(fieldId, hintId, message){
@@ -1155,8 +1090,8 @@
 
       setTimeout(() => current.classList.remove('exiting'), 320);
 
-      if (targetStep === 3) startLoadingSequence();
-      if (targetStep === 5) enterFinalStep();
+      if (targetStep === 5) startLoadingSequence();
+      if (targetStep === 6) enterFinalStep();
     }
 
     function updateProgress(step){
@@ -1226,7 +1161,7 @@
         clearInterval(progressTimer);
         clearInterval(messageTimer);
         loadingFill.style.width = '100%';
-        goToStep(4);
+        goToStep(6);
       }, 2500);
     }
 
@@ -1249,8 +1184,7 @@
         },
         lead: {
           fullName: state.lead.fullName,
-          whatsapp: state.lead.whatsapp,
-          email: state.lead.email
+          whatsapp: state.lead.whatsapp
         },
         utm: captureUTMs(),
         page: {
@@ -1347,7 +1281,6 @@
 
       if (state.lead.fullName) parts.push(`Nome: ${state.lead.fullName}`);
       if (state.lead.whatsapp) parts.push(`WhatsApp: ${formatWhatsappForMessage(state.lead.whatsapp)}`);
-      if (state.lead.email) parts.push(`E-mail: ${state.lead.email}`);
 
       return parts.join('\n');
     }

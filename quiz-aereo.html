@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111827">
   <meta name="description" content="Quiz de captação para passageiros com problemas com companhia aérea.">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//connect.facebook.net">
   <title>Análise gratuita do seu caso</title>
   <style>
     :root{
@@ -825,7 +829,6 @@
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
     // Configurações operacionais
     const WEBHOOK_URL = "https://lhbwfbquxkutcyqazpnw.functions.supabase.co/quiz-aereo-lead-relay";
@@ -858,6 +861,9 @@
       loadingStarted: false,
       finalPlayed: false,
       currentProgress: 0,
+      trackingBootstrapped: false,
+      confettiRequested: false,
+      confettiLoaded: false,
       tracking: {
         pageViewSent: false,
         viewContentSent: false,
@@ -885,7 +891,7 @@
     const whatsAppBtn = document.getElementById('whatsAppBtn');
 
 
-    bootstrapTracking();
+    scheduleNonCriticalBoot();
     bindProtection();
     bindSelections();
     bindForm();
@@ -894,13 +900,25 @@
     updateWhatsAppLinks();
     staggerVisibleItems(document.querySelector('.screen.active'));
 
+    function scheduleNonCriticalBoot(){
+      const start = () => bootstrapTracking();
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(start, { timeout: 1800 });
+      } else {
+        window.setTimeout(start, 1200);
+      }
+    }
+
     function bootstrapTracking(){
+      if (state.trackingBootstrapped) return;
+      state.trackingBootstrapped = true;
       window.dataLayer = window.dataLayer || [];
       window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
 
-      if (GA_ID) {
+      if (GA_ID && !document.querySelector('script[data-ga-loader="quiz-aereo"]')) {
         const gaScript = document.createElement('script');
         gaScript.async = true;
+        gaScript.dataset.gaLoader = 'quiz-aereo';
         gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;
         document.head.appendChild(gaScript);
         gtag('js', new Date());
@@ -935,6 +953,17 @@
       trackPageView();
     }
 
+    function ensureConfetti(){
+      if (state.confettiLoaded || state.confettiRequested) return;
+      state.confettiRequested = true;
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+      script.async = true;
+      script.dataset.confettiLoader = 'quiz-aereo';
+      script.onload = () => { state.confettiLoaded = true; };
+      document.body.appendChild(script);
+    }
+
     function bindProtection(){
       document.addEventListener('contextmenu', event => {
         event.preventDefault();
@@ -943,6 +972,7 @@
 
     function bindCTAs(){
       startBtn.addEventListener('click', () => {
+        bootstrapTracking();
         trackViewContent();
         goToStep(1);
       });
@@ -978,11 +1008,12 @@
       group.querySelectorAll('.option-card').forEach(card => {
         card.classList.remove('selected', 'selection-hit');
       });
-      void button.offsetWidth;
-      button.classList.add('selected', 'selection-hit');
+      button.classList.add('selected');
+      requestAnimationFrame(() => button.classList.add('selection-hit'));
       state.answers[questionKey] = button.dataset.value;
       createRipple(button, event);
       vibrate(20);
+      ensureConfetti();
       fireSmallConfetti(button);
       trackEvent('quiz_answer', { question: questionKey, answer: button.dataset.value });
       if (questionKey === 'caseType') nextStep1.disabled = false;
@@ -1152,17 +1183,17 @@
       if (!scope) return;
       scope.querySelectorAll('.bullet-item, .option-card').forEach((item, index) => {
         item.style.animation = 'none';
-        item.offsetHeight;
-        item.style.animation = `fadeUp .45s var(--ease-soft) forwards`;
-        item.style.animationDelay = `${index * 80}ms`;
+        requestAnimationFrame(() => {
+          item.style.animation = `fadeUp .45s var(--ease-soft) forwards`;
+          item.style.animationDelay = `${index * 80}ms`;
+        });
       });
     }
 
     function showToast(message){
       toast.textContent = message;
       toast.classList.remove('show');
-      void toast.offsetWidth;
-      toast.classList.add('show');
+      requestAnimationFrame(() => toast.classList.add('show'));
       setTimeout(() => toast.classList.remove('show'), 1500);
     }
 
@@ -1369,6 +1400,7 @@
     }
 
     function fireBigConfetti(){
+      ensureConfetti();
       if (typeof confetti !== 'function') return;
       const base = { particleCount: 60, spread: 70, startVelocity: 42, colors: ['#2563EB', '#10B981', '#F59E0B', '#FFFFFF'] };
       confetti({ ...base, origin:{ x:.1, y:.68 } });

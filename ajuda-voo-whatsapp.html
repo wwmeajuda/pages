@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Me Ajuda | Redirecionando para o WhatsApp</title>
+  <meta name="description" content="Redirecionamento rápido para atendimento via WhatsApp da Me Ajuda.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://connect.facebook.net">
+  <style>
+    :root {
+      --bg-1: #0f172a;
+      --bg-2: #1e3a8a;
+      --card: rgba(255,255,255,0.94);
+      --text: #0f172a;
+      --muted: #475569;
+      --green: #25d366;
+      --green-dark: #128c47;
+      --ring: rgba(37,211,102,0.24);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.22), transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card);
+      border-radius: 28px;
+      padding: 32px 24px;
+      box-shadow: 0 30px 80px rgba(15,23,42,0.35);
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .logo {
+      width: 170px;
+      max-width: 70%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 5vw, 38px);
+      line-height: 1.08;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .status {
+      margin: 22px auto 18px;
+      width: 78px;
+      height: 78px;
+      border-radius: 999px;
+      background: rgba(37,211,102,0.12);
+      border: 1px solid rgba(37,211,102,0.26);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 0 12px var(--ring);
+    }
+    .status svg {
+      width: 38px;
+      height: 38px;
+      fill: var(--green);
+    }
+    .loader {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.26);
+      overflow: hidden;
+      margin: 24px 0 10px;
+    }
+    .loader > span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-origin: left center;
+      animation: progress 1.4s linear forwards;
+      background: linear-gradient(90deg, #22c55e, #25d366);
+    }
+    .target {
+      margin: 18px 0 24px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(241,245,249,0.95);
+      border: 1px solid rgba(148,163,184,0.22);
+      text-align: left;
+    }
+    .target strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #0f172a;
+    }
+    .target code {
+      display: block;
+      word-break: break-word;
+      white-space: pre-wrap;
+      font-size: 13px;
+      color: #0f172a;
+      background: transparent;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 16px 18px;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      text-decoration: none;
+      box-shadow: 0 18px 35px rgba(37,211,102,0.34);
+    }
+    .btn:hover { filter: brightness(1.02); }
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .preview-pill {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    @keyframes progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+  </style>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JJ6D28ZZZE');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJ6D28ZZZE"></script>
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '610478651574908');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=610478651574908&ev=PageView&noscript=1"></noscript>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="https://lhbwfbquxkutcyqazpnw.supabase.co/storage/v1/object/public/images/logo/meajuda.webp" alt="Me Ajuda">
+    <div class="status" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </div>
+    <h1>Redirecionando para o WhatsApp</h1>
+    <p>Você será levado para o atendimento da Me Ajuda com a mensagem já preenchida.</p>
+    <div class="loader" aria-hidden="true"><span></span></div>
+    <div class="target">
+      <strong>Mensagem enviada</strong>
+      <code id="messagePreview"></code>
+    </div>
+    <a class="btn" id="manualLink" href="#" rel="noopener">Abrir WhatsApp agora</a>
+    <p class="note" id="statusText">Se o redirecionamento não acontecer automaticamente, toque no botão acima.</p>
+    <div id="previewPill" class="preview-pill" hidden>Modo preview ativo</div>
+  </main>
+
+  <script>
+    const PHONE = '553897279500';
+    const MESSAGE = 'Olá, tive problemas com meu voo, pode me ajudar?';
+    const params = new URLSearchParams(window.location.search);
+    const isPreview = params.get('preview') === '1';
+    const encodedMessage = encodeURIComponent(MESSAGE);
+    const whatsappUrl = `https://wa.me/${PHONE}?text=${encodedMessage}`;
+
+    document.getElementById('manualLink').href = whatsappUrl;
+    document.getElementById('messagePreview').textContent = MESSAGE;
+
+    function trackEvent(eventName, extra = {}) {
+      try {
+        if (typeof fbq !== 'undefined') {
+          if (eventName === 'redirect_click') fbq('track', 'Contact');
+          if (eventName === 'redirect_ready') fbq('trackCustom', 'RedirectReady', extra);
+        }
+        if (typeof gtag !== 'undefined') {
+          gtag('event', eventName, {
+            event_category: 'redirect',
+            event_label: 'whatsapp_me_ajuda_voo',
+            page_path: window.location.pathname,
+            ...extra,
+          });
+        }
+      } catch (_) {}
+    }
+
+    function goToWhatsApp(trigger) {
+      trackEvent('redirect_click', { trigger });
+      window.location.href = whatsappUrl;
+    }
+
+    document.getElementById('manualLink').addEventListener('click', function () {
+      trackEvent('manual_click', { trigger: 'button' });
+    });
+
+    trackEvent('redirect_ready', {
+      preview: isPreview ? '1' : '0',
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_content: params.get('utm_content') || '',
+      utm_term: params.get('utm_term') || '',
+      fbclid: params.get('fbclid') || '',
+      gclid: params.get('gclid') || ''
+    });
+
+    if (isPreview) {
+      document.getElementById('previewPill').hidden = false;
+      document.getElementById('statusText').textContent = 'Preview ativo: o redirecionamento automático foi pausado para inspeção.';
+    } else {
+      setTimeout(() => goToWhatsApp('auto'), 1200);
+    }
+  </script>
+</body>
+</html>
